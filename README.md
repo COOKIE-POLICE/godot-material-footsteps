@@ -45,19 +45,19 @@ To use this addon, follow these steps:
 
 **Core Settings**
 
-*`material_footstep_sound_map`: List of `MaterialFootstepSound` resources.
-*`default_material_footstep_sound`: The fallback sound if no match is found.
-*`target_character`: The `CharacterBody3D` whose movement is tracked.
-*`accepted_meta_data_names`: Metadata keys to check (default: `["surface_type"]`).
+* `material_footstep_sound_map`: List of `MaterialFootstepSound` resources.
+* `default_material_footstep_sound`: The fallback sound if no match is found.
+* `target_character`: The `CharacterBody3D` whose movement is tracked.
+* `accepted_meta_data_names`: Metadata keys to check (default: `["surface_type"]`).
 
 **Auto Play Settings**
 
-*`auto_play`: If true, footsteps play automatically. Disable this property if you want to play the footstep sound during animations. Once you have disabled this property, just connect to the `play` method in the `MaterialFootstepPlayer` node.
-*`auto_play_delay`: Time (in seconds) between each footstep, only works when `auto_play` property is on.
+* `auto_play`: If true, footsteps play automatically. Disable this property if you want to play the footstep sound during animations. Once you have disabled this property, just connect to the `play` method in the `MaterialFootstepPlayer` node.
+* `auto_play_delay`: Time (in seconds) between each footstep, only works when `auto_play` property is on.
 
 **Debug Settings**
 
-*`debug`: If true, debug logs print to console.
+* `debug`: If true, debug logs print to console.
 
 ---
 
