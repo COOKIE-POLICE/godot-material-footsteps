@@ -1,0 +1,20 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Godot Material Footsteps"
+config/version="1.0.0"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://cam2psxprmsi3"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_chain_of_responsibility/plugin.cfg", "res://addons/godot_material_footsteps/plugin.cfg")

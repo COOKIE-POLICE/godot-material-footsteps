@@ -1,0 +1,153 @@
+[gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
+
+[ext_resource type="Script" uid="uid://f8dnes60dfd4" path="res://addons/godot_material_footsteps/demo/demo1/player.gd" id="1_ooy1x"]
+[ext_resource type="Script" uid="uid://u51ev15g0ytr" path="res://addons/godot_material_footsteps/core/material_footstep_player.gd" id="2_ul810"]
+[ext_resource type="Script" uid="uid://bkplbk1tvl54k" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_1kpru"]
+[ext_resource type="AudioStream" uid="uid://bjgeuc476v36f" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/grass.wav" id="4_vqch4"]
+[ext_resource type="AudioStream" uid="uid://jsqqwtlaprl1" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/concrete.wav" id="5_uu4cd"]
+[ext_resource type="AudioStream" uid="uid://bikhqffbuv66h" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/Sand.wav" id="6_uu4cd"]
+[ext_resource type="AudioStream" uid="uid://22xtxlb15yxx" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/Snow.wav" id="7_jpgeo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1kpru"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_vqch4"]
+sky_material = SubResource("ProceduralSkyMaterial_1kpru")
+
+[sub_resource type="Environment" id="Environment_uu4cd"]
+background_mode = 2
+sky = SubResource("Sky_vqch4")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jpgeo"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_074xi"]
+size = Vector2(3, 3)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1pj"]
+points = PackedVector3Array(-1.5, 0, -1.5, -1.5, 0, 1.5, 1.5, 0, -1.5, 1.5, 0, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ks1pj"]
+albedo_color = Color(0.661149, 0.863634, 0.947731, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1y8bk"]
+size = Vector2(3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7jk0"]
+albedo_color = Color(0.43957, 0.400456, 0.180308, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ratao"]
+size = Vector2(3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uu4cd"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jpgeo"]
+size = Vector2(3, 3)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ul810"]
+
+[sub_resource type="Resource" id="Resource_jpgeo"]
+script = ExtResource("3_1kpru")
+material_name = "Grass"
+sounds = Array[AudioStream]([ExtResource("4_vqch4")])
+metadata/_custom_type_script = "uid://bkplbk1tvl54k"
+
+[sub_resource type="Resource" id="Resource_3xboo"]
+script = ExtResource("3_1kpru")
+material_name = "Sand"
+sounds = Array[AudioStream]([ExtResource("6_uu4cd")])
+metadata/_custom_type_script = "uid://bkplbk1tvl54k"
+
+[sub_resource type="Resource" id="Resource_ibs3k"]
+script = ExtResource("3_1kpru")
+material_name = "Ice"
+sounds = Array[AudioStream]([ExtResource("7_jpgeo")])
+metadata/_custom_type_script = "uid://bkplbk1tvl54k"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uu4cd"]
+
+[node name="Demo1" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10464, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uu4cd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Map" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Grass" type="MeshInstance3D" parent="Map"]
+material_override = SubResource("StandardMaterial3D_jpgeo")
+mesh = SubResource("PlaneMesh_074xi")
+skeleton = NodePath("../..")
+
+[node name="Grass" type="StaticBody3D" parent="Map/Grass"]
+metadata/surface_type = "Grass"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Grass/Grass"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Ice" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+material_override = SubResource("StandardMaterial3D_ks1pj")
+mesh = SubResource("PlaneMesh_1y8bk")
+skeleton = NodePath("../..")
+
+[node name="Ice" type="StaticBody3D" parent="Map/Ice"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ice/Ice"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+metadata/surface_type = "Ice"
+
+[node name="Sand" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+material_override = SubResource("StandardMaterial3D_f7jk0")
+mesh = SubResource("PlaneMesh_ratao")
+skeleton = NodePath("../..")
+metadata/surface_type = "Sand"
+
+[node name="Sand" type="StaticBody3D" parent="Map/Sand"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Sand/Sand"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Default" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+material_override = SubResource("StandardMaterial3D_uu4cd")
+mesh = SubResource("PlaneMesh_jpgeo")
+skeleton = NodePath("../..")
+
+[node name="Default" type="StaticBody3D" parent="Map/Default"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Default/Default"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07474, 1.21263, 0)
+script = ExtResource("1_ooy1x")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.679352, -0.365859)
+
+[node name="Camera3D" type="Camera3D" parent="Player/Head"]
+cull_mask = 983039
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ul810")
+
+[node name="MaterialFootstepPlayer" type="RayCast3D" parent="Player" node_paths=PackedStringArray("target_character")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.124865, 0)
+script = ExtResource("2_ul810")
+material_footstep_sound_map = Array[ExtResource("3_1kpru")]([SubResource("Resource_jpgeo"), SubResource("Resource_3xboo"), SubResource("Resource_ibs3k")])
+default_material_footstep_sound = ExtResource("5_uu4cd")
+target_character = NodePath("..")
+metadata/_custom_type_script = "uid://u51ev15g0ytr"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_uu4cd")
