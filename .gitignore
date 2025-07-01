@@ -1,2 +1,17 @@
 .godot/
+.import/
+.export/
+*.import
+*.uid
+*.tmp
+
+export_presets.cfg  # personal export configs; skip unless you want to version them
+.editorconfig       # personal editor settings; skip unless it's project-wide config
+
+.DS_Store
+.idea/
+.vscode/
+*.log
+
 /android/
+*.zip
