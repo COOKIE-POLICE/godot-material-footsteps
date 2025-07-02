@@ -13,8 +13,8 @@ config_version=5
 config/name="Godot Material Footsteps"
 config/version="1.0.0"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://cam2psxprmsi3"
+config/icon="uid://k5jx0j5d072l"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_chain_of_responsibility/plugin.cfg", "res://addons/godot_material_footsteps/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_material_footsteps/plugin.cfg")

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://df6rcb2xlscrf"]
-
-[ext_resource type="Script" uid="uid://u51ev15g0ytr" path="res://addons/godot_material_footsteps/core/material_footstep_player.gd" id="1_bl3jm"]
-
-[node name="MaterialFootstepPlayer" type="RayCast3D"]
-script = ExtResource("1_bl3jm")

@@ -1,17 +1,27 @@
+# .gitignore template for Godot addons
+
+# Godot 4+ specific ignores
 .godot/
-.import/
-.export/
-*.import
-*.uid
-*.tmp
-
-export_presets.cfg  # personal export configs; skip unless you want to version them
-.editorconfig       # personal editor settings; skip unless it's project-wide config
-
-.DS_Store
-.idea/
-.vscode/
-*.log
-
+.nomedia
+*.editorconfig
+*.godot
 /android/
-*.zip
+*.uid
+*.import
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+# Visual Studio Code specific ignores
+.vscode/
+.idea/

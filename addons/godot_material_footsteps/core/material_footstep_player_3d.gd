@@ -1,6 +1,7 @@
+@tool
 @icon("res://addons/godot_material_footsteps/assets/editor_icons/icon.png")
+class_name MaterialFootstepPlayer3D
 extends RayCast3D
-class_name MaterialFootstepPlayer
 
 @export_category("Core Settings")
 @export var material_footstep_sound_map: Array[MaterialFootstepSound]
@@ -114,5 +115,5 @@ func _play_sound_for_material(material_name: String) -> void:
 	_audio_player.play()
 
 func _debug(msg: String) -> void:
-	if debug:
+	if debug and (OS.is_debug_build()) and (not Engine.is_editor_hint()):
 		print(msg)
