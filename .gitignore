@@ -4,7 +4,6 @@
 .godot/
 .nomedia
 *.editorconfig
-*.godot
 /android/
 *.uid
 *.import

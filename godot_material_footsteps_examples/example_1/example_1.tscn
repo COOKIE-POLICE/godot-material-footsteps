@@ -1,12 +1,12 @@
 [gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
 
-[ext_resource type="Script" uid="uid://exwbv01vcxsu" path="res://addons/godot_material_footsteps/demo/demo1/player.gd" id="1_ooy1x"]
-[ext_resource type="Script" uid="uid://dknfdabd6q7lg" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_uu4cd"]
-[ext_resource type="Script" uid="uid://brs41a81r66ww" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_jpgeo"]
-[ext_resource type="AudioStream" uid="uid://c7p3dndcpskqj" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/grass.wav" id="4_ks1pj"]
-[ext_resource type="AudioStream" uid="uid://c8jdxl3fag0gh" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/snow.wav" id="5_1y8bk"]
-[ext_resource type="AudioStream" uid="uid://darei3a62gc0" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/sand.wav" id="6_f7jk0"]
-[ext_resource type="AudioStream" uid="uid://ohqf52rigqfw" path="res://addons/godot_material_footsteps/demo/demo1/assets/sfx/concrete.wav" id="7_ratao"]
+[ext_resource type="Script" uid="uid://exwbv01vcxsu" path="res://godot_material_footsteps_examples/example_1/player.gd" id="1_71dig"]
+[ext_resource type="Script" uid="uid://dknfdabd6q7lg" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_jh48y"]
+[ext_resource type="Script" uid="uid://brs41a81r66ww" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_v0wfk"]
+[ext_resource type="AudioStream" uid="uid://c7p3dndcpskqj" path="res://godot_material_footsteps_examples/assets/sfx/grass.wav" id="4_k4ydx"]
+[ext_resource type="AudioStream" uid="uid://c8jdxl3fag0gh" path="res://godot_material_footsteps_examples/assets/sfx/snow.wav" id="5_722kn"]
+[ext_resource type="AudioStream" uid="uid://darei3a62gc0" path="res://godot_material_footsteps_examples/assets/sfx/sand.wav" id="6_3s6yp"]
+[ext_resource type="AudioStream" uid="uid://ohqf52rigqfw" path="res://godot_material_footsteps_examples/assets/sfx/concrete.wav" id="7_y37d6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1kpru"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -52,25 +52,24 @@ size = Vector2(3, 3)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_uu4cd"]
 
 [sub_resource type="Resource" id="Resource_3xboo"]
-script = ExtResource("3_jpgeo")
+script = ExtResource("3_v0wfk")
 material_name = "Grass"
-sounds = Array[AudioStream]([ExtResource("4_ks1pj")])
+sounds = Array[AudioStream]([ExtResource("4_k4ydx")])
 metadata/_custom_type_script = "uid://brs41a81r66ww"
 
 [sub_resource type="Resource" id="Resource_ibs3k"]
-script = ExtResource("3_jpgeo")
+script = ExtResource("3_v0wfk")
 material_name = "Ice"
-sounds = Array[AudioStream]([ExtResource("5_1y8bk")])
+sounds = Array[AudioStream]([ExtResource("5_722kn")])
 metadata/_custom_type_script = "uid://brs41a81r66ww"
 
 [sub_resource type="Resource" id="Resource_yt6qj"]
-script = ExtResource("3_jpgeo")
+script = ExtResource("3_v0wfk")
 material_name = "Sand"
-sounds = Array[AudioStream]([ExtResource("6_f7jk0")])
+sounds = Array[AudioStream]([ExtResource("6_3s6yp")])
 metadata/_custom_type_script = "uid://brs41a81r66ww"
 
-[node name="Demo1" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10464, 0, 0)
+[node name="Example1" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uu4cd")
@@ -130,7 +129,7 @@ shape = SubResource("ConvexPolygonShape3D_ks1pj")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07474, 1.21263, 0)
-script = ExtResource("1_ooy1x")
+script = ExtResource("1_71dig")
 
 [node name="Head" type="Node3D" parent="Player"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.679352, -0.365859)
@@ -146,8 +145,8 @@ mesh = SubResource("CapsuleMesh_uu4cd")
 
 [node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("target_character")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0796182, 0)
-script = ExtResource("2_uu4cd")
-material_footstep_sound_map = Array[ExtResource("3_jpgeo")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj")])
-default_material_footstep_sound = ExtResource("7_ratao")
+script = ExtResource("2_jh48y")
+material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj")])
+default_material_footstep_sound = ExtResource("7_y37d6")
 target_character = NodePath("..")
 metadata/_custom_type_script = "uid://dknfdabd6q7lg"

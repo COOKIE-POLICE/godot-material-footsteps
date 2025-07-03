@@ -1,7 +1,9 @@
-@tool
 @icon("res://addons/godot_material_footsteps/assets/editor_icons/icon.png")
 class_name MaterialFootstepPlayer3D
 extends RayCast3D
+
+const ChainOfResponsibility = preload("res://addons/godot_material_footsteps/core/chain_of_responsibility.gd")
+const CountUpTimer = preload("res://addons/godot_material_footsteps/core/count_up_timer.gd")
 
 @export_category("Core Settings")
 @export var material_footstep_sound_map: Array[MaterialFootstepSound]
@@ -17,39 +19,46 @@ extends RayCast3D
 @export_category("Debug Settings")
 @export var debug: bool = true
 
-var _all_possible_material_names: Array[String]
-var _audio_player: AudioStreamPlayer3D
-var _auto_play_timer: float = 0.0
+@onready var _audio_player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
+
+var _all_possible_material_names: Array
+var _auto_play_timer: CountUpTimer = CountUpTimer.new()
+var chain = ChainOfResponsibility.new()
+var _sound_map : Dictionary = {}
+
+func _setup_sound_map() -> void:
+	for entry in material_footstep_sound_map:
+		_sound_map[entry.material_name] = entry.sounds
+
+func _setup_chain() -> void:
+	chain.add_handler(_determine_by_meta)
+	chain.add_handler(_determine_by_meta_of_descendants)
+	chain.add_handler(_determine_by_meta_of_ancestors)
 
 func _ready() -> void:
-	_audio_player = AudioStreamPlayer3D.new()
+	print(_audio_player)
+	_setup_sound_map()
+	_setup_chain()
 	add_child(_audio_player)
-	_all_possible_material_names = _calculate_all_possible_material_names()
+	_update_all_possible_material_names()
 
 func _physics_process(delta: float) -> void:
 	if not auto_play:
 		return
-	_auto_play_timer -= delta
-	if _auto_play_timer <= 0.0:
+	_auto_play_timer.update(delta)
+	if _auto_play_timer.is_elapsed(auto_play_delay):
 		play()
-		_auto_play_timer = auto_play_delay
-
-func _is_character_falling() -> bool:
-	return target_character and not target_character.is_on_floor() and target_character.velocity.y < 0.0
+		_auto_play_timer.reset()
 
 func _is_character_moving() -> bool:
-	return target_character and target_character.velocity.length() > 0.1
+	return target_character and target_character.is_on_floor() and target_character.velocity.length() > 0.1
 
-func _refresh_all_possible_material_names() -> void:
-	_all_possible_material_names = _calculate_all_possible_material_names()
-
+func _update_all_possible_material_names() -> void:
+	_all_possible_material_names = material_footstep_sound_map.map(func(entry): return entry.material_name)
+	print(_all_possible_material_names)
 func _determine_material_name(collider: Object) -> Variant:
 	if collider == null:
 		return null
-	var chain = ChainOfResponsibility.new()
-	chain.add_handler(func(collider): return _determine_by_meta(collider))
-	chain.add_handler(func(collider): return _determine_by_meta_of_descendants(collider))
-	chain.add_handler(func(collider): return _determine_by_meta_of_ancestors(collider))
 	return chain.handle(collider)
 
 func _determine_by_meta(collider: Object) -> Variant:
@@ -64,7 +73,9 @@ func _determine_by_meta_of_descendants(collider: Object) -> Variant:
 	for child in collider.get_children():
 		var material_name = _determine_by_meta(child)
 		if material_name == null:
-			_determine_by_meta_of_descendants(child)
+			var descendant_result = _determine_by_meta_of_descendants(child)
+			if descendant_result != null:
+				return descendant_result
 		else:
 			return material_name
 	return null
@@ -82,8 +93,7 @@ func _determine_by_meta_of_ancestors(collider: Object) -> Variant:
 
 
 func play() -> void:
-	_refresh_all_possible_material_names()
-	if not is_colliding() or _is_character_falling() or not _is_character_moving():
+	if not is_colliding() or not _is_character_moving():
 		_debug("[Godot Material Footsteps] No collider detected, not playing any sound or character not moving or character is just falling.")
 		return
 	var material_name = _determine_material_name(get_collider())
@@ -94,26 +104,17 @@ func play() -> void:
 		_debug("[Godot Material Footsteps] No material found, using Default")
 		_play_sound_for_material("Default")
 
-func _calculate_all_possible_material_names() -> Array[String]:
-	var names: Array[String]
-	for entry in material_footstep_sound_map:
-		names.append(entry.material_name)
-	return names
 
 func _play_sound_for_material(material_name: String) -> void:
-	var sounds: Array[AudioStream]
-	for entry in material_footstep_sound_map:
-		if entry.material_name == material_name:
-			sounds = entry.sounds
-			break
+	var sounds = _sound_map.get(material_name, [])
 	if sounds.is_empty():
 		_audio_player.stream = default_material_footstep_sound
 		_debug("[Godot Material Footsteps] Playing default sound")
 	else:
-		_audio_player.stream = sounds[randi() % sounds.size()]
+		_audio_player.stream = sounds[randi_range(0, sounds.size() - 1)]
 		_debug("[Godot Material Footsteps] Playing sound for: %s | Clip: %s" % [material_name, _audio_player.stream.resource_path])
 	_audio_player.play()
 
 func _debug(msg: String) -> void:
-	if debug and (OS.is_debug_build()) and (not Engine.is_editor_hint()):
+	if debug and OS.is_debug_build():
 		print(msg)

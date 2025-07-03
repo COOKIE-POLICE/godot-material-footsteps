@@ -1,5 +1,4 @@
 extends RefCounted
-class_name ChainOfResponsibility
 
 var handlers: Array[Callable]
 
