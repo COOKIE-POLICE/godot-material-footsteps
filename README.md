@@ -26,6 +26,9 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
 
 ## Usage
 
+[![Video Tutorial](https://img.youtube.com/vi/zFgYhZyGRw0/hqdefault.jpg)](https://youtu.be/zFgYhZyGRw0)
+
+
 To use this addon, follow these steps:
 
 1. In your player scene:
