@@ -11,6 +11,8 @@ const CountUpTimer = preload("res://addons/godot_material_footsteps/core/count_u
 @export var target_character: CharacterBody3D
 @export var accepted_meta_data_names: Array[String] = ["surface_type"]
 
+@export_category("Optional Overrides")
+@export var audio_player: AudioStreamPlayer3D = null
 
 @export_category("Auto Play Settings")
 @export var auto_play: bool = true
@@ -18,8 +20,6 @@ const CountUpTimer = preload("res://addons/godot_material_footsteps/core/count_u
 
 @export_category("Debug Settings")
 @export var debug: bool = true
-
-@onready var _audio_player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
 
 var _all_possible_material_names: Array
 var _auto_play_timer: CountUpTimer = CountUpTimer.new()
@@ -36,10 +36,11 @@ func _setup_chain() -> void:
 	chain.add_handler(_determine_by_meta_of_ancestors)
 
 func _ready() -> void:
-	print(_audio_player)
 	_setup_sound_map()
 	_setup_chain()
-	add_child(_audio_player)
+	if audio_player == null:
+		audio_player = AudioStreamPlayer3D.new()
+		add_child(audio_player)
 	_update_all_possible_material_names()
 
 func _physics_process(delta: float) -> void:
@@ -55,7 +56,7 @@ func _is_character_moving() -> bool:
 
 func _update_all_possible_material_names() -> void:
 	_all_possible_material_names = material_footstep_sound_map.map(func(entry): return entry.material_name)
-	print(_all_possible_material_names)
+
 func _determine_material_name(collider: Object) -> Variant:
 	if collider == null:
 		return null
@@ -108,12 +109,12 @@ func play() -> void:
 func _play_sound_for_material(material_name: String) -> void:
 	var sounds = _sound_map.get(material_name, [])
 	if sounds.is_empty():
-		_audio_player.stream = default_material_footstep_sound
+		audio_player.stream = default_material_footstep_sound
 		_debug("[Godot Material Footsteps] Playing default sound")
 	else:
-		_audio_player.stream = sounds[randi_range(0, sounds.size() - 1)]
-		_debug("[Godot Material Footsteps] Playing sound for: %s | Clip: %s" % [material_name, _audio_player.stream.resource_path])
-	_audio_player.play()
+		audio_player.stream = sounds[randi_range(0, sounds.size() - 1)]
+		_debug("[Godot Material Footsteps] Playing sound for: %s | Clip: %s" % [material_name, audio_player.stream.resource_path])
+	audio_player.play()
 
 func _debug(msg: String) -> void:
 	if debug and OS.is_debug_build():
