@@ -1,4 +1,4 @@
-@icon("res://addons/godot_material_footsteps/assets/editor_icons/icon.png")
+@icon("../assets/editor_icons/icon.png")
 class_name MaterialFootstepPlayer3D
 extends RayCast3D
 
