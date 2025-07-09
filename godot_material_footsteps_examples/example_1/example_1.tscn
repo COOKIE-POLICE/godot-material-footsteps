@@ -1,12 +1,12 @@
 [gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
 
-[ext_resource type="Script" uid="uid://exwbv01vcxsu" path="res://godot_material_footsteps_examples/example_1/player.gd" id="1_71dig"]
-[ext_resource type="Script" uid="uid://dknfdabd6q7lg" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_jh48y"]
-[ext_resource type="Script" uid="uid://brs41a81r66ww" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_v0wfk"]
-[ext_resource type="AudioStream" uid="uid://c7p3dndcpskqj" path="res://godot_material_footsteps_examples/assets/sfx/grass.wav" id="4_k4ydx"]
-[ext_resource type="AudioStream" uid="uid://c8jdxl3fag0gh" path="res://godot_material_footsteps_examples/assets/sfx/snow.wav" id="5_722kn"]
-[ext_resource type="AudioStream" uid="uid://darei3a62gc0" path="res://godot_material_footsteps_examples/assets/sfx/sand.wav" id="6_3s6yp"]
-[ext_resource type="AudioStream" uid="uid://ohqf52rigqfw" path="res://godot_material_footsteps_examples/assets/sfx/concrete.wav" id="7_y37d6"]
+[ext_resource type="Script" uid="uid://dwe7gmhiyexhq" path="res://godot_material_footsteps_examples/example_1/player.gd" id="1_71dig"]
+[ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_jh48y"]
+[ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_v0wfk"]
+[ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://godot_material_footsteps_examples/assets/sfx/grass.wav" id="4_k4ydx"]
+[ext_resource type="AudioStream" uid="uid://br8x5hd7o3ala" path="res://godot_material_footsteps_examples/assets/sfx/snow.wav" id="5_722kn"]
+[ext_resource type="AudioStream" uid="uid://dqjiak4d0tasq" path="res://godot_material_footsteps_examples/assets/sfx/sand.wav" id="6_3s6yp"]
+[ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://godot_material_footsteps_examples/assets/sfx/concrete.wav" id="7_y37d6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1kpru"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -149,4 +149,3 @@ script = ExtResource("2_jh48y")
 material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj")])
 default_material_footstep_sound = ExtResource("7_y37d6")
 target_character = NodePath("..")
-metadata/_custom_type_script = "uid://dknfdabd6q7lg"

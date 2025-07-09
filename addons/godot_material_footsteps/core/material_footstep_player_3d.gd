@@ -2,8 +2,8 @@
 class_name MaterialFootstepPlayer3D
 extends RayCast3D
 
-const ChainOfResponsibility = preload("res://addons/godot_material_footsteps/core/chain_of_responsibility.gd")
-const CountUpTimer = preload("res://addons/godot_material_footsteps/core/count_up_timer.gd")
+var chain_of_responsibility = preload("../scripts/chain_of_responsibility.gd").new()
+var count_up_timer = preload("../scripts/count_up_timer.gd").new()
 
 @export_category("Core Settings")
 @export var material_footstep_sound_map: Array[MaterialFootstepSound]
@@ -22,8 +22,6 @@ const CountUpTimer = preload("res://addons/godot_material_footsteps/core/count_u
 @export var debug: bool = true
 
 var _all_possible_material_names: Array
-var _auto_play_timer: CountUpTimer = CountUpTimer.new()
-var chain = ChainOfResponsibility.new()
 var _sound_map : Dictionary = {}
 
 func _setup_sound_map() -> void:
@@ -31,9 +29,9 @@ func _setup_sound_map() -> void:
 		_sound_map[entry.material_name] = entry.sounds
 
 func _setup_chain() -> void:
-	chain.add_handler(_determine_by_meta)
-	chain.add_handler(_determine_by_meta_of_descendants)
-	chain.add_handler(_determine_by_meta_of_ancestors)
+	chain_of_responsibility.add_handler(_determine_by_meta)
+	chain_of_responsibility.add_handler(_determine_by_meta_of_descendants)
+	chain_of_responsibility.add_handler(_determine_by_meta_of_ancestors)
 
 func _ready() -> void:
 	_setup_sound_map()
@@ -46,10 +44,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not auto_play:
 		return
-	_auto_play_timer.update(delta)
-	if _auto_play_timer.is_elapsed(auto_play_delay):
+	count_up_timer.update(delta)
+	if count_up_timer.is_elapsed(auto_play_delay):
 		play()
-		_auto_play_timer.reset()
+		count_up_timer.reset()
 
 func _is_character_moving() -> bool:
 	return target_character and target_character.is_on_floor() and target_character.velocity.length() > 0.1
@@ -60,7 +58,7 @@ func _update_all_possible_material_names() -> void:
 func _determine_material_name(collider: Object) -> Variant:
 	if collider == null:
 		return null
-	return chain.handle(collider)
+	return chain_of_responsibility.handle(collider)
 
 func _determine_by_meta(collider: Object) -> Variant:
 	for meta_name in accepted_meta_data_names:
