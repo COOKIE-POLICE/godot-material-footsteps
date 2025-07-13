@@ -19,7 +19,6 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
 - [Godot Material Footsteps](#godot-material-footsteps)
 - [Table of Contents](#table-of-contents)
 - [Usage](#usage)
-- [Editor Properties](#editor-properties)
 - [Support](#support)
 
 ---
@@ -33,6 +32,7 @@ To use this addon, follow these steps:
 
 1. In your player scene:
    * Add a `MaterialFootstepPlayer3D` node pointing downward under your character’s foot or base.
+
 2. In the Inspector for the `MaterialFootstepPlayer3D`:
    * Set `target_character` to your player’s `CharacterBody3D`.
    * Fill in `material_footstep_sound_map` with `MaterialFootstepSound` resources mapping material names to sound lists.
@@ -45,26 +45,7 @@ To use this addon, follow these steps:
 	 * Key: `surface_type`
 	 * Value: e.g. `"Grass"`, `"Wood"`, `"stone"` — matching the names in your `material_footstep_sound_map`.
 
----
-
-## Editor Properties
-
-**Core Settings**
-
-* `material_footstep_sound_map`: List of `MaterialFootstepSound` resources.
-* `default_material_footstep_sound`: The fallback sound if no match is found.
-* `target_character`: The `CharacterBody3D` whose movement is tracked.
-* `accepted_meta_data_names`: Metadata keys to check (default: `["surface_type"]`).
-
-**Auto Play Settings**
-
-* `auto_play`: If true, footsteps play automatically. Disable this property if you want to play the footstep sound during animations. Once you have disabled this property, just connect to the `play` method in the `MaterialFootstepPlayer` node.
-* `auto_play_delay`: Time (in seconds) between each footstep, only works when `auto_play` property is on.
-
-**Debug Settings**
-
-* `debug`: If true, debug logs print to console.
-
+* IMPORTANT: This addon also supports GridMaps, but this won't be heavily documented, just name the mesh matching the names in your `material_footstep_sound_map`.
 ---
 
 ## Support

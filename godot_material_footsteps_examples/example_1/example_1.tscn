@@ -1,12 +1,13 @@
-[gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
+[gd_scene load_steps=27 format=3 uid="uid://chv6bdwwsgg8o"]
 
 [ext_resource type="Script" uid="uid://dwe7gmhiyexhq" path="res://godot_material_footsteps_examples/example_1/player.gd" id="1_71dig"]
 [ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_jh48y"]
-[ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep_sound.gd" id="3_v0wfk"]
+[ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep.gd" id="3_v0wfk"]
 [ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://godot_material_footsteps_examples/assets/sfx/grass.wav" id="4_k4ydx"]
 [ext_resource type="AudioStream" uid="uid://br8x5hd7o3ala" path="res://godot_material_footsteps_examples/assets/sfx/snow.wav" id="5_722kn"]
 [ext_resource type="AudioStream" uid="uid://dqjiak4d0tasq" path="res://godot_material_footsteps_examples/assets/sfx/sand.wav" id="6_3s6yp"]
 [ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://godot_material_footsteps_examples/assets/sfx/concrete.wav" id="7_y37d6"]
+[ext_resource type="MeshLibrary" uid="uid://cabegce78rkb3" path="res://godot_material_footsteps_examples/example_1/tiles/tiles.tres" id="8_jh48y"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1kpru"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -68,6 +69,12 @@ script = ExtResource("3_v0wfk")
 material_name = "Sand"
 sounds = Array[AudioStream]([ExtResource("6_3s6yp")])
 metadata/_custom_type_script = "uid://brs41a81r66ww"
+
+[sub_resource type="Resource" id="Resource_jh48y"]
+script = ExtResource("3_v0wfk")
+material_name = "Concrete"
+sounds = Array[AudioStream]([ExtResource("7_y37d6")])
+metadata/_custom_type_script = "uid://cfs28riswyejx"
 
 [node name="Example1" type="Node3D"]
 
@@ -146,6 +153,14 @@ mesh = SubResource("CapsuleMesh_uu4cd")
 [node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("target_character")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0796182, 0)
 script = ExtResource("2_jh48y")
-material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj")])
+material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj"), SubResource("Resource_jh48y")])
 default_material_footstep_sound = ExtResource("7_y37d6")
 target_character = NodePath("..")
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("8_jh48y")
+cell_size = Vector3(1, 1, 1)
+data = {
+"cells": PackedInt32Array(65532, 65535, 0, 65532, 0, 0, 65532, 1, 0, 65532, 65534, 0, 65532, 65533, 0, 65532, 2, 0, 65531, 65533, 131072, 65530, 65533, 131072, 65529, 65533, 131072, 65528, 65533, 131072, 65527, 65533, 131072, 65526, 65533, 131072, 65526, 65534, 131072, 65526, 65535, 131072, 65526, 0, 131072, 65526, 1, 131072, 65527, 1, 131072, 65527, 2, 131072, 65526, 2, 131072, 65528, 2, 131072, 65529, 2, 131072, 65530, 2, 131072, 65531, 2, 131072, 65531, 1, 131072, 65531, 0, 131072, 65531, 65535, 131072, 65531, 65534, 131072, 65530, 65534, 131072, 65529, 65534, 131072, 65528, 65534, 131072, 65527, 65534, 131072, 65527, 65535, 131072, 65527, 0, 131072, 65528, 0, 131072, 65528, 65535, 131072, 65528, 1, 131072, 65529, 1, 131072, 65529, 0, 131072, 65530, 0, 131072, 65530, 65535, 131072, 65529, 65535, 131072, 65530, 1, 131072, 65532, 3, 131072, 65532, 4, 131072, 65531, 4, 131072, 65530, 4, 131072, 65530, 3, 131072, 65529, 3, 131072, 65528, 3, 131072, 65527, 3, 131072, 65531, 3, 131072, 65529, 4, 131072, 65528, 4, 131072, 65527, 4, 131072, 65526, 4, 131072, 65526, 3, 131072, 65525, 3, 131072, 65525, 4, 131072, 65524, 3, 131072, 65524, 2, 131072, 65524, 1, 131072, 65525, 1, 131072, 65525, 2, 131072, 65524, 4, 131072, 65524, 0, 131072, 65524, 65535, 131072, 65524, 65534, 131072, 65524, 65533, 131072, 65524, 65532, 131072, 65525, 65532, 131072, 65525, 65533, 131072, 65525, 65534, 131072, 65525, 65535, 131072, 65525, 0, 131072, 65525, 65531, 131072, 65524, 65531, 131072, 65524, 65530, 131072, 65525, 65530, 131072, 65526, 65530, 131072, 65526, 65531, 131072, 65527, 65530, 131072, 65527, 65531, 131072, 65527, 65532, 131072, 65526, 65532, 131072, 65528, 65531, 131072, 65529, 65531, 131072, 65529, 65530, 131072, 65528, 65530, 131072, 65530, 65530, 131072, 65531, 65530, 131072, 65532, 65530, 131072, 65532, 65531, 131072, 65532, 65532, 131072, 65531, 65532, 131072, 65531, 65531, 131072, 65530, 65531, 131072, 65530, 65532, 131072, 65529, 65532, 131072, 65528, 65532, 131072, 131059, 65530, 458753, 131059, 65531, 458753, 131059, 65532, 458753, 131059, 65533, 458753, 131059, 65534, 458753, 131059, 65535, 458753, 131059, 0, 458753, 131059, 1, 458753, 131059, 2, 458753, 131059, 3, 458753, 131059, 4, 458753, 131058, 4, 458753, 131058, 3, 458753, 131058, 2, 458753, 131058, 1, 458753, 131058, 0, 458753, 131058, 65535, 458753, 131058, 65534, 458753, 131058, 65533, 458753, 131058, 65532, 458753, 131058, 65531, 458753, 131058, 65530, 458753, 131057, 65530, 458753, 131057, 65531, 458753, 131057, 65532, 458753, 131057, 65533, 458753, 131057, 65534, 458753, 131057, 65535, 458753, 131057, 0, 458753, 131057, 1, 458753, 131057, 2, 458753, 131057, 3, 458753, 131057, 4, 458753, 131056, 65530, 851969, 131055, 65530, 851969, 131054, 65530, 851969, 131053, 65530, 851969, 131052, 65530, 851969, 131052, 65531, 851969, 131052, 65532, 851969, 131052, 65533, 851969, 131052, 65534, 851969, 131052, 65535, 851969, 131052, 0, 851969, 131052, 1, 851969, 131052, 2, 851969, 131052, 3, 851969, 131052, 4, 851969, 131055, 4, 851969, 131056, 4, 851969, 131054, 4, 851969, 131053, 4, 851969, 131056, 65531, 851969, 131055, 65531, 851969, 131054, 65531, 851969, 131053, 65531, 851969, 131053, 65532, 851969, 131053, 65533, 851969, 131053, 65534, 851969, 131053, 65535, 851969, 131053, 0, 851969, 131053, 1, 851969, 131053, 2, 851969, 131053, 3, 851969, 131054, 3, 851969, 131055, 3, 851969, 131056, 3, 851969, 131056, 2, 851969, 131056, 1, 851969, 131056, 0, 851969, 131056, 65535, 851969, 131056, 65534, 851969, 131056, 65533, 851969, 131056, 65532, 851969, 131055, 65532, 851969, 131054, 65532, 851969, 131054, 65533, 851969, 131054, 65534, 851969, 131054, 65535, 851969, 131054, 0, 851969, 131054, 1, 851969, 131054, 2, 851969, 131055, 2, 851969, 131055, 1, 851969, 131055, 0, 851969, 131055, 65535, 851969, 131055, 65534, 851969, 131055, 65533, 851969)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)

@@ -4,12 +4,14 @@ extends RayCast3D
 
 var chain_of_responsibility = preload("../scripts/chain_of_responsibility.gd").new()
 var count_up_timer = preload("../scripts/count_up_timer.gd").new()
+var meta_data_material_detector = preload("../scripts/meta_data_material_detector.gd").new()
+var grid_map_material_detector = preload("../scripts/grid_map_material_detector.gd").new()
 
 @export_category("Core Settings")
-@export var material_footstep_sound_map: Array[MaterialFootstepSound]
+@export var material_footstep_sound_map: Array[MaterialFootstep]
 @export var default_material_footstep_sound: AudioStream
 @export var target_character: CharacterBody3D
-@export var accepted_meta_data_names: Array[String] = ["surface_type"]
+@export var accepted_meta_data_names: PackedStringArray =["surface_type"]
 
 @export_category("Optional Overrides")
 @export var audio_player: AudioStreamPlayer3D = null
@@ -21,7 +23,7 @@ var count_up_timer = preload("../scripts/count_up_timer.gd").new()
 @export_category("Debug Settings")
 @export var debug: bool = true
 
-var _all_possible_material_names: Array
+var _all_possible_material_names: PackedStringArray
 var _sound_map : Dictionary = {}
 
 func _setup_sound_map() -> void:
@@ -29,9 +31,8 @@ func _setup_sound_map() -> void:
 		_sound_map[entry.material_name] = entry.sounds
 
 func _setup_chain() -> void:
-	chain_of_responsibility.add_handler(_determine_by_meta)
-	chain_of_responsibility.add_handler(_determine_by_meta_of_descendants)
-	chain_of_responsibility.add_handler(_determine_by_meta_of_ancestors)
+	chain_of_responsibility.add_handler(grid_map_material_detector.detect)
+	chain_of_responsibility.add_handler(meta_data_material_detector.detect)
 
 func _ready() -> void:
 	_setup_sound_map()
@@ -49,47 +50,19 @@ func _physics_process(delta: float) -> void:
 		play()
 		count_up_timer.reset()
 
+func _determine_material_name(collider: Object) -> Variant:
+	if collider == null:
+		return null
+	return chain_of_responsibility.handle([get_collider(), get_collision_point()])
+
 func _is_character_moving() -> bool:
 	return target_character and target_character.is_on_floor() and target_character.velocity.length() > 0.1
 
 func _update_all_possible_material_names() -> void:
 	_all_possible_material_names = material_footstep_sound_map.map(func(entry): return entry.material_name)
-
-func _determine_material_name(collider: Object) -> Variant:
-	if collider == null:
-		return null
-	return chain_of_responsibility.handle(collider)
-
-func _determine_by_meta(collider: Object) -> Variant:
-	for meta_name in accepted_meta_data_names:
-		if collider.has_meta(meta_name):
-			var material_name = collider.get_meta(meta_name)
-			if material_name in _all_possible_material_names:
-				return material_name
-	return null
-
-func _determine_by_meta_of_descendants(collider: Object) -> Variant:
-	for child in collider.get_children():
-		var material_name = _determine_by_meta(child)
-		if material_name == null:
-			var descendant_result = _determine_by_meta_of_descendants(child)
-			if descendant_result != null:
-				return descendant_result
-		else:
-			return material_name
-	return null
-
-func _determine_by_meta_of_ancestors(collider: Object) -> Variant:
-	var current = collider.get_parent()
-	while current:
-		var material_name = _determine_by_meta(current)
-		if material_name == null:
-			current = current.get_parent()
-		else:
-			return material_name
-	return null
-		
-
+	meta_data_material_detector.accepted_meta_data_names = accepted_meta_data_names
+	meta_data_material_detector.all_possible_material_names = _all_possible_material_names
+	grid_map_material_detector.all_possible_material_names = _all_possible_material_names
 
 func play() -> void:
 	if not is_colliding() or not _is_character_moving():

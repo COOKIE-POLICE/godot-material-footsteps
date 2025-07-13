@@ -1,5 +1,5 @@
 extends Resource
-class_name MaterialFootstepSound
+class_name MaterialFootstep
 
 @export var material_name: String
 @export var sounds: Array[AudioStream]
