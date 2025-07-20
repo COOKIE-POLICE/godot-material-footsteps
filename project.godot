@@ -11,10 +11,10 @@ config_version=5
 [application]
 
 config/name="Godot Material Footsteps"
-config/version="1.2.0"
+config/version="1.5.0"
 config/tags=PackedStringArray("addons")
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://k5jx0j5d072l"
+config/icon="uid://o07cdoruhoqq"
 
 [editor_plugins]
 

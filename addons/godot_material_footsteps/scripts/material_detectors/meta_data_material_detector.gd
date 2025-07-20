@@ -1,5 +1,4 @@
-extends RefCounted
-class_name MetaDataMaterialDetector
+extends "./material_detector.gd"
 
 var accepted_meta_data_names: PackedStringArray = ["surface_type"]
 var all_possible_material_names : PackedStringArray = []

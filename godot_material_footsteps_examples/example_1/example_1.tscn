@@ -150,12 +150,12 @@ shape = SubResource("CapsuleShape3D_ul810")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_uu4cd")
 
-[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("target_character")]
+[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("character")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0796182, 0)
 script = ExtResource("2_jh48y")
+character = NodePath("..")
 material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_3xboo"), SubResource("Resource_ibs3k"), SubResource("Resource_yt6qj"), SubResource("Resource_jh48y")])
 default_material_footstep_sound = ExtResource("7_y37d6")
-target_character = NodePath("..")
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("8_jh48y")

@@ -1,5 +1,4 @@
-extends RefCounted
-class_name GridMapMaterialDetector
+extends "./material_detector.gd"
 
 var all_possible_material_names: PackedStringArray = []
 

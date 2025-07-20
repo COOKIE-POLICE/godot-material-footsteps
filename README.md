@@ -8,7 +8,7 @@
   <img src="addons/godot_material_footsteps/assets/editor_icons/icon.png"alt="Godot Material Footsteps Icon", width="128"height="128"/>
 </p>
 
-A Godot 3D addon for automatically playing footstep sounds based on the material a character walks on. This addon uses a simple meta data solution.
+A Godot 3D addon for automatically playing footstep sounds based on the material a character walks on. This addon supports mainly a metadata-based solution, but it also supports GridMap.
 
 [Check it out on Godot Asset Library!](https://godotengine.org/asset-library/asset/4122)
 
@@ -27,29 +27,25 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
 
 [![Video Tutorial](https://img.youtube.com/vi/zFgYhZyGRw0/hqdefault.jpg)](https://youtu.be/zFgYhZyGRw0)
 
-
-To use this addon, follow these steps:
-
 1. In your player scene:
-   * Add a `MaterialFootstepPlayer3D` node pointing downward under your character’s foot or base.
+   * Add a `MaterialFootstepPlayer3D` node pointing under your character.
 
 2. In the Inspector for the `MaterialFootstepPlayer3D`:
-   * Set `target_character` to your player’s `CharacterBody3D`.
-   * Fill in `material_footstep_sound_map` with `MaterialFootstepSound` resources mapping material names to sound lists.
+   * Set `target_character` to your player.
+   * Fill in `material_footstep_sound_map` with `MaterialFootstep` resources mapping material names to sound lists.
    * Set a `default_material_footstep_sound`.
-   * Optionally adjust `accepted_meta_data_names` (defaults to `["surface_type"]`).
 
 3. In your level scene:
    * Select any floor (e.g. `StaticBody3D` or any ancestor or descendant of that `StaticBody3D`).
    * In the Inspector, under **Metadata**, add a new key-value pair:
 	 * Key: `surface_type`
-	 * Value: e.g. `"Grass"`, `"Wood"`, `"stone"` — matching the names in your `material_footstep_sound_map`.
+	 * Value: matching the names in your `material_footstep_sound_map`.
 
-* IMPORTANT: This addon also supports GridMaps, but this won't be heavily documented, just name the mesh matching the names in your `material_footstep_sound_map`.
+4. If you are using the GridMap node. It is the same process. However, since the GridMap does not support any type of metadata, you instead have to match each tile's name to whatever you put in your `material_footstep_sound_map`.
 ---
 
 ## Support
 
-Star this repository... I guess.
+Star this repository, contribute and open issues.
 
 ---
