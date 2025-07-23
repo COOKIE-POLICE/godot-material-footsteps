@@ -161,7 +161,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.758647, 0)
 script = ExtResource("2_jh48y")
 character = NodePath("..")
 material_footstep_sound_map = Array[ExtResource("3_v0wfk")]([SubResource("Resource_v0wfk"), SubResource("Resource_k4ydx"), SubResource("Resource_722kn"), SubResource("Resource_3s6yp")])
-default_material_footstep_sound = ExtResource("7_y37d6")
+default_material_footstep_movement_sound = ExtResource("7_y37d6")
+default_material_footstep_landing_sound = ExtResource("7_y37d6")
 character_max_speed = 8.0
 metadata/_custom_type_script = "uid://jy4sym0dop3s"
 

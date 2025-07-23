@@ -10,7 +10,8 @@ enum AutoPlayType {STATIC, DYNAMIC, DISABLED}
 @export_group("Core Settings")
 @export var character: CharacterBody3D
 @export var material_footstep_sound_map: Array[MaterialFootstep]
-@export var default_material_footstep_sound: AudioStream
+@export var default_material_footstep_movement_sound: AudioStream
+@export var default_material_footstep_landing_sound: AudioStream
 
 @export_group("Optional Overrides")
 @export var audio_player: AudioStreamPlayer3D = null
@@ -41,7 +42,8 @@ var landing_detector = preload("../scripts/landing_detector.gd").new()
 @onready var null_validator = preload("../scripts/validators/null_validator.gd").new({
 	"character": character,
 	"material_footstep_sound_map": material_footstep_sound_map,
-	"default_material_footstep_sound": default_material_footstep_sound
+	"default_material_footstep_movement_sound": default_material_footstep_movement_sound,
+	"default_material_footstep_landing_sound": default_material_footstep_landing_sound
 })
 
 @onready var composite_validator = preload("../scripts/validators/composite_validator.gd").new([null_validator])
@@ -53,8 +55,8 @@ var _landing_sound_map: Dictionary = {}
 # --- INITIALIZATION ---
 
 func _ready() -> void:
-	landing_detector.landed.connect(_on_player_landed)
 	composite_validator.validate()
+	landing_detector.landed.connect(_on_player_landed)
 	_initialize_sound_maps()
 	_initialize_chain_of_responsibility()
 	_update_material_detector_properties()
@@ -129,7 +131,10 @@ func _play_sound_for_material(material_name: String, type: FootstepType) -> void
 			sound_to_play = _landing_sound_map.get(material_name)
 
 	if sound_to_play == null:
-		audio_player.stream = default_material_footstep_sound
+		if type == FootstepType.MOVEMENT:
+			audio_player.stream = default_material_footstep_movement_sound
+		elif type == FootstepType.LANDING:
+			audio_player.stream = default_material_footstep_landing_sound
 		_log_debug("Playing default footstep sound.")
 	else:
 		audio_player.stream = sound_to_play
