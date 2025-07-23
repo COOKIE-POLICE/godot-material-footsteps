@@ -1,10 +1,11 @@
 extends "./validator.gd"
 
-
 var required_variables: Dictionary[String, Variant] = {}
+
 
 func _init(variables: Dictionary[String, Variant]) -> void:
 	required_variables = variables
+
 
 func validate() -> bool:
 	var checks_passed: bool = true

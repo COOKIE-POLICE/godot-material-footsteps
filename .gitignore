@@ -1,14 +1,10 @@
-# .gitignore template for Godot addons
-
 # Godot 4+ specific ignores
 .godot/
 .nomedia
-*.editorconfig
 /android/
-*.uid
-*.import
 
 # Godot-specific ignores
+.editorconfig
 .import/
 export.cfg
 export_credentials.cfg
@@ -21,6 +17,6 @@ export_credentials.cfg
 data_*/
 mono_crash.*.json
 
-# Visual Studio Code specific ignores
+# VSC-specific ignores
 .vscode/
-.idea/
+

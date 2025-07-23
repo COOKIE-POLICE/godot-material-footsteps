@@ -26,6 +26,7 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
 ## Usage
 
 [![Video Tutorial](https://img.youtube.com/vi/zFgYhZyGRw0/hqdefault.jpg)](https://youtu.be/zFgYhZyGRw0)
+Keep in mind the video above is a little outdated.
 
 1. In your player scene:
    * Add a `MaterialFootstepPlayer3D` node pointing under your character.
@@ -42,6 +43,8 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
 	 * Value: matching the names in your `material_footstep_sound_map`.
 
 4. If you are using the GridMap node. It is the same process. However, since the GridMap does not support any type of metadata, you instead have to match each tile's name to whatever you put in your `material_footstep_sound_map`.
+
+5. If you need multiple `AudioStream` for a material you should use the Godot `AudioStreamPlaylist` or `AudioStreamRandomizer` resources. Also for `AudioStreamRandomizer` turn off loop. If I see a issue open about audio continue playing on a surface even while staying still and you use `AudioStreamRandimizer` with loop on, I am going to crash out.
 ---
 
 ## Support

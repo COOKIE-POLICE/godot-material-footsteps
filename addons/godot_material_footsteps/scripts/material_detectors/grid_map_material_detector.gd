@@ -2,6 +2,7 @@ extends "./material_detector.gd"
 
 var all_possible_material_names: PackedStringArray = []
 
+
 func detect(collider: Object, collision_point: Vector3) -> Variant:
 	if collider == null:
 		return null
@@ -13,7 +14,6 @@ func detect(collider: Object, collision_point: Vector3) -> Variant:
 	local_pos.y -= gridmap.cell_size.y
 	var cell = gridmap.local_to_map(local_pos)
 	return _detect_material(gridmap, cell)
-
 
 
 func _detect_material(gridmap: GridMap, cell: Vector3i) -> Variant:

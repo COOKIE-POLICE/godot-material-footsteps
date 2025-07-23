@@ -1,7 +1,8 @@
 extends "./material_detector.gd"
 
 var accepted_meta_data_names: PackedStringArray = ["surface_type"]
-var all_possible_material_names : PackedStringArray = []
+var all_possible_material_names: PackedStringArray = []
+
 
 func detect(collider: Object, collision_point: Vector3) -> Variant:
 	var result = _detect_material(collider)
@@ -13,6 +14,7 @@ func detect(collider: Object, collision_point: Vector3) -> Variant:
 		return result
 	return _detect_in_ancestors(collider)
 
+
 func _detect_material(collider: Object) -> Variant:
 	if collider == null:
 		return null
@@ -22,6 +24,7 @@ func _detect_material(collider: Object) -> Variant:
 			if material_name in all_possible_material_names:
 				return material_name
 	return null
+
 
 func _detect_in_descendants(collider: Object) -> Variant:
 	if collider == null:
@@ -34,6 +37,7 @@ func _detect_in_descendants(collider: Object) -> Variant:
 		if name != null:
 			return name
 	return null
+
 
 func _detect_in_ancestors(collider: Object) -> Variant:
 	var current = collider
