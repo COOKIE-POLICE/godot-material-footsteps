@@ -4,9 +4,9 @@ extends RayCast3D
 
 # --- ENUMS ---
 enum FootstepType { MOVEMENT, LANDING }
-enum AutoPlayType {STATIC, DYNAMIC, DISABLED}
-# --- EXPORTS ---
+enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 
+# --- EXPORTS ---
 @export_group("Core Settings")
 @export var character: CharacterBody3D
 @export var material_footstep_sound_map: Array[MaterialFootstep]
@@ -14,7 +14,7 @@ enum AutoPlayType {STATIC, DYNAMIC, DISABLED}
 @export var default_material_footstep_landing_sound: AudioStream
 
 @export_group("Optional Overrides")
-@export var audio_player: AudioStreamPlayer3D = null
+@export var audio_player: AudioStreamPlayer3D
 
 @export_group("Advanced Settings")
 @export var accepted_meta_data_names: PackedStringArray = ["surface_type"]
@@ -25,140 +25,169 @@ enum AutoPlayType {STATIC, DYNAMIC, DISABLED}
 @export var min_footstep_delay: float = 0.2
 @export var max_footstep_delay: float = 0.6
 @export var character_max_speed: float = 16.0
+@export var min_movement_velocity: float = 0.1
 @export_subgroup("Static Auto Play Settings")
 @export var auto_play_delay: float = 0.45
 
 @export_group("Debug")
 @export var debug: bool = true
 
+# --- CONSTANTS ---
+const SCRIPTS_PATH = "../scripts/"
+
 # --- INTERNAL STATE ---
+var chain_of_responsibility: RefCounted
+var count_up_timer: RefCounted
+var meta_data_material_detector: RefCounted
+var grid_map_material_detector: RefCounted
+var landing_detector: RefCounted
 
-var chain_of_responsibility = preload("../scripts/chain_of_responsibility.gd").new()
-var count_up_timer = preload("../scripts/count_up_timer.gd").new()
-var meta_data_material_detector = preload("../scripts/material_detectors/meta_data_material_detector.gd").new()
-var grid_map_material_detector = preload("../scripts/material_detectors/grid_map_material_detector.gd").new()
-var landing_detector = preload("../scripts/landing_detector.gd").new()
-
-@onready var null_validator = preload("../scripts/validators/null_validator.gd").new({
-	"character": character,
-	"material_footstep_sound_map": material_footstep_sound_map,
-	"default_material_footstep_movement_sound": default_material_footstep_movement_sound,
-	"default_material_footstep_landing_sound": default_material_footstep_landing_sound
-})
-
-@onready var composite_validator = preload("../scripts/validators/composite_validator.gd").new([null_validator])
-
-var _all_possible_material_names: PackedStringArray
-var _movement_sound_map: Dictionary = {}
-var _landing_sound_map: Dictionary = {}
+var movement_sound_map: Dictionary
+var landing_sound_map: Dictionary
+var all_possible_material_names: PackedStringArray
+var cached_footstep_delay: float
+var last_speed_ratio: float = -1.0
 
 # --- INITIALIZATION ---
-
 func _ready() -> void:
-	composite_validator.validate()
-	landing_detector.landed.connect(_on_player_landed)
-	_initialize_sound_maps()
-	_initialize_chain_of_responsibility()
-	_update_material_detector_properties()
-	_initialize_audio_player()
+	_validate_required_properties()
+	_create_components()
+	_setup_sound_maps()
+	_configure_material_detectors()
+	_setup_audio_player()
+	_connect_signals()
 	count_up_timer.start()
 
-func _initialize_sound_maps() -> void:
-	for entry in material_footstep_sound_map:
-		_movement_sound_map[entry.material_name] = entry.movement_sound
-		_landing_sound_map[entry.material_name] = entry.landing_sound
+func _validate_required_properties() -> void:
+	if not OS.is_debug_build():
+		return
+	
+	assert(character != null, "Character is required")
+	assert(material_footstep_sound_map != null, "Material footstep sound map is required") 
+	assert(default_material_footstep_movement_sound != null, "Default movement sound is required")
+	assert(default_material_footstep_landing_sound != null, "Default landing sound is required")
 
-func _initialize_chain_of_responsibility() -> void:
+func _create_components() -> void:
+	chain_of_responsibility = preload(SCRIPTS_PATH + "chain_of_responsibility.gd").new()
+	count_up_timer = preload(SCRIPTS_PATH + "count_up_timer.gd").new()
+	meta_data_material_detector = preload(SCRIPTS_PATH + "material_detectors/meta_data_material_detector.gd").new()
+	grid_map_material_detector = preload(SCRIPTS_PATH + "material_detectors/grid_map_material_detector.gd").new()
+	landing_detector = preload(SCRIPTS_PATH + "landing_detector.gd").new()
+
+func _setup_sound_maps() -> void:
+	movement_sound_map.clear()
+	landing_sound_map.clear()
+	all_possible_material_names.clear()
+	
+	for entry in material_footstep_sound_map:
+		var material_name = entry.material_name
+		movement_sound_map[material_name] = entry.movement_sound
+		landing_sound_map[material_name] = entry.landing_sound
+		all_possible_material_names.append(material_name)
+
+func _configure_material_detectors() -> void:
 	chain_of_responsibility.add_handler(grid_map_material_detector.detect)
 	chain_of_responsibility.add_handler(meta_data_material_detector.detect)
+	
+	var shared_properties = {
+		"accepted_meta_data_names": accepted_meta_data_names,
+		"all_possible_material_names": all_possible_material_names
+	}
+	
+	for detector in [meta_data_material_detector, grid_map_material_detector]:
+		for property_name in shared_properties:
+			detector.set(property_name, shared_properties[property_name])
 
-func _update_material_detector_properties() -> void:
-	_all_possible_material_names = material_footstep_sound_map.map(
-		func(entry): return entry.material_name
-	)
-	meta_data_material_detector.accepted_meta_data_names = accepted_meta_data_names
-	meta_data_material_detector.all_possible_material_names = _all_possible_material_names
-	grid_map_material_detector.all_possible_material_names = _all_possible_material_names
-
-func _initialize_audio_player() -> void:
-	if audio_player == null:
+func _setup_audio_player() -> void:
+	if not audio_player:
 		audio_player = AudioStreamPlayer3D.new()
 		add_child(audio_player)
 
-# --- MAIN LOOP ---
+func _connect_signals() -> void:
+	landing_detector.landed.connect(_on_player_landed)
 
+# --- MAIN LOOP ---
 func _physics_process(delta: float) -> void:
 	landing_detector.update(character)
-	var footstep_delay: float
-	if auto_play_type == AutoPlayType.DYNAMIC:
-		var current_speed = character.velocity.length()
-		var speed_ratio = clamp(current_speed / character_max_speed, 0.0, 1.0)
-		footstep_delay = lerp(max_footstep_delay, min_footstep_delay, speed_ratio)
-	elif auto_play_type == AutoPlayType.STATIC:
-		footstep_delay = auto_play_delay
-	if count_up_timer.is_elapsed(footstep_delay) and not auto_play_type == AutoPlayType.DISABLED:
-		play_footstep(FootstepType.MOVEMENT)
+	
+	if auto_play_type == AutoPlayType.DISABLED:
+		count_up_timer.update(delta)
+		return
+	
+	var footstep_delay = _get_current_footstep_delay()
+	if count_up_timer.is_elapsed(footstep_delay):
+		_try_play_movement_footstep()
 		count_up_timer.reset()
-
+	
 	count_up_timer.update(delta)
 
-# --- FOOTSTEP PLAYBACK ---
+func _get_current_footstep_delay() -> float:
+	if auto_play_type == AutoPlayType.STATIC:
+		return auto_play_delay
+	
+	var speed_ratio = _calculate_speed_ratio()
+	if speed_ratio != last_speed_ratio:
+		cached_footstep_delay = lerpf(max_footstep_delay, min_footstep_delay, speed_ratio)
+		last_speed_ratio = speed_ratio
+	
+	return cached_footstep_delay
 
+func _calculate_speed_ratio() -> float:
+	var current_speed = character.velocity.length()
+	return clampf(current_speed / character_max_speed, 0.0, 1.0)
+
+func _try_play_movement_footstep() -> void:
+	if _should_play_movement_sound():
+		play_footstep(FootstepType.MOVEMENT)
+
+func _should_play_movement_sound() -> bool:
+	return (is_colliding() and 
+			character and 
+			character.is_on_floor() and 
+			character.velocity.length() > min_movement_velocity)
+
+# --- FOOTSTEP PLAYBACK ---
 func play_footstep(type: FootstepType) -> void:
 	if not is_colliding():
-		_log_debug("No collider detected. No sound will be played.")
+		_debug_log("No collider detected. No sound will be played.")
 		return
-
-	if type == FootstepType.MOVEMENT and not _is_character_on_floor_and_moving():
-		_log_debug("Character not moving or not on floor. Movement sound skipped.")
+	
+	if type == FootstepType.MOVEMENT and not _should_play_movement_sound():
+		_debug_log("Character not moving or not on floor. Movement sound skipped.")
 		return
-
-	var material_name = _determine_material_name(get_collider())
-	if material_name != null:
-		_play_sound_for_material(material_name, type)
-		_log_debug("Hit surface: %s" % material_name)
-	else:
-		_log_debug("No material found underfoot, playing default sound.")
-		_play_sound_for_material("Default", type)
-
-func _play_sound_for_material(material_name: String, type: FootstepType) -> void:
-	var sound_to_play: AudioStream = null
-
-	match type:
-		FootstepType.MOVEMENT:
-			sound_to_play = _movement_sound_map.get(material_name)
-		FootstepType.LANDING:
-			sound_to_play = _landing_sound_map.get(material_name)
-
-	if sound_to_play == null:
-		if type == FootstepType.MOVEMENT:
-			audio_player.stream = default_material_footstep_movement_sound
-		elif type == FootstepType.LANDING:
-			audio_player.stream = default_material_footstep_landing_sound
-		_log_debug("Playing default footstep sound.")
-	else:
-		audio_player.stream = sound_to_play
-		_log_debug("Playing sound for %s: %s" % [material_name, audio_player.stream.resource_path])
-
+	
+	var material_name = _detect_surface_material()
+	var sound_stream = _get_sound_for_material(material_name, type)
+	
+	audio_player.stream = sound_stream
 	audio_player.play()
+	
+	if material_name:
+		_debug_log("Playing sound for %s: %s" % [material_name, audio_player.stream.resource_path])
+	else:
+		_debug_log("Playing default footstep sound: %s" % [audio_player.stream.resource_path])
+
+func _detect_surface_material() -> String:
+	var collider = get_collider()
+	if not collider:
+		return ""
+	
+	var material_name = chain_of_responsibility.handle([self])
+	return material_name if material_name else ""
+
+func _get_sound_for_material(material_name: String, type: FootstepType) -> AudioStream:
+	var sound_map = landing_sound_map if type == FootstepType.LANDING else movement_sound_map
+	var default_sound = default_material_footstep_landing_sound if type == FootstepType.LANDING else default_material_footstep_movement_sound
+	
+	return sound_map.get(material_name, default_sound)
 
 # --- HELPERS ---
-
-func _determine_material_name(collider: Object) -> Variant:
-	if collider == null:
-		return null
-	return chain_of_responsibility.handle([collider, get_collision_point()])
-
-func _is_character_on_floor_and_moving() -> bool:
-	return character and character.is_on_floor() and character.velocity.length() > 0.1
-
-func _log_debug(message: String) -> void:
+func _debug_log(message: String) -> void:
 	if debug and OS.is_debug_build():
 		print("[Godot Material Footsteps] " + message)
 
 # --- SIGNAL HANDLERS ---
-
 func _on_player_landed(fall_speed: float) -> void:
-	_log_debug("Player landed.")
+	_debug_log("Player landed.")
 	play_footstep(FootstepType.LANDING)
 	count_up_timer.reset()

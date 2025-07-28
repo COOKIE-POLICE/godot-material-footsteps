@@ -1,6 +1,6 @@
 extends RefCounted
 
 
-func detect(collider: Object, collision_point: Vector3) -> Variant:
+func detect(raycast: RayCast3D) -> Variant:
 	push_error("[MaterialDetector] Not implemented.")
 	return null

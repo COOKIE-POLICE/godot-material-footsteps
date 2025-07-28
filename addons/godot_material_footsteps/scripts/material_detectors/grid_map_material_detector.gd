@@ -3,14 +3,14 @@ extends "./material_detector.gd"
 var all_possible_material_names: PackedStringArray = []
 
 
-func detect(collider: Object, collision_point: Vector3) -> Variant:
-	if collider == null:
+func detect(raycast: RayCast3D) -> Variant:
+	if raycast.get_collider() == null:
 		return null
-	if not (collider is GridMap):
+	if not (raycast.get_collider() is GridMap):
 		return null
 
-	var gridmap = collider as GridMap
-	var local_pos = gridmap.to_local(collision_point)
+	var gridmap = raycast.get_collider() as GridMap
+	var local_pos = gridmap.to_local(raycast.get_collision_point())
 	local_pos.y -= gridmap.cell_size.y
 	var cell = gridmap.local_to_map(local_pos)
 	return _detect_material(gridmap, cell)
