@@ -28,6 +28,20 @@ extends CharacterBody3D
 ## How fast do we freefly?
 @export var freefly_speed : float = 25.0
 
+@export_group("Camera Effects")
+## Enable headbob when moving
+@export var enable_headbob : bool = true
+## Headbob vertical intensity
+@export var headbob_intensity : float = 0.1
+## Headbob frequency multiplier
+@export var headbob_frequency : float = 2.0
+## Enable camera lean when strafing
+@export var enable_camera_lean : bool = true
+## Maximum lean angle in degrees
+@export var lean_angle : float = 5.0
+## Lean transition speed
+@export var lean_speed : float = 8.0
+
 @export_group("Input Actions")
 ## Name of Input Action to move Left.
 @export var input_left : String = "ui_left"
@@ -49,6 +63,10 @@ var look_rotation : Vector2
 var move_speed : float = 0.0
 var freeflying : bool = false
 
+var headbob_time : float = 0.0
+var current_lean : float = 0.0
+var head_base_position : Vector3
+
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
@@ -57,6 +75,7 @@ func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
+	head_base_position = head.position
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
@@ -83,6 +102,7 @@ func _physics_process(delta: float) -> void:
 		var motion := (head.global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		motion *= freefly_speed * delta
 		move_and_collide(motion)
+		update_camera_effects(delta, input_dir)
 		return
 	
 	# Apply gravity to velocity
@@ -102,8 +122,9 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
+	var input_dir := Vector2.ZERO
 	if can_move:
-		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
+		input_dir = Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:
 			velocity.x = move_dir.x * move_speed
@@ -117,7 +138,27 @@ func _physics_process(delta: float) -> void:
 	
 	# Use velocity to actually move
 	move_and_slide()
+	
+	# Update camera effects
+	update_camera_effects(delta, input_dir)
 
+func update_camera_effects(delta: float, input_dir: Vector2):
+	# Headbob
+	if enable_headbob:
+		var is_moving = input_dir.length() > 0.1 and (is_on_floor() or freeflying)
+		if is_moving:
+			headbob_time += delta * headbob_frequency * move_speed
+			var bob_offset = sin(headbob_time) * headbob_intensity
+			head.position.y = head_base_position.y + bob_offset
+		else:
+			headbob_time = 0.0
+			head.position.y = lerp(head.position.y, head_base_position.y, delta * 10.0)
+	
+	# Camera lean
+	if enable_camera_lean:
+		var target_lean = -input_dir.x * deg_to_rad(lean_angle)
+		current_lean = lerp(current_lean, target_lean, delta * lean_speed)
+		head.rotation.z = current_lean
 
 ## Rotate us to look around.
 ## Base of controller rotates around y (left/right). Head rotates around x (up/down).
@@ -130,7 +171,8 @@ func rotate_look(rot_input : Vector2):
 	rotate_y(look_rotation.y)
 	head.transform.basis = Basis()
 	head.rotate_x(look_rotation.x)
-
+	if enable_camera_lean:
+		head.rotate_z(current_lean)
 
 func enable_freefly():
 	collider.disabled = true
@@ -141,16 +183,13 @@ func disable_freefly():
 	collider.disabled = false
 	freeflying = false
 
-
 func capture_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_captured = true
 
-
 func release_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
-
 
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://br8x5hd7o3ala"
-path="res://.godot/imported/ice.wav-9a4424308b60d701cd9d5fc34980848e.sample"
+path="res://.godot/imported/ice.wav-2c2fd366e726b6ec3327f55a4701a5c6.sample"
 
 [deps]
 
-source_file="res://godot_material_footsteps_examples/assets/sfx/ice.wav"
-dest_files=["res://.godot/imported/ice.wav-9a4424308b60d701cd9d5fc34980848e.sample"]
+source_file="res://godot_material_footsteps_examples/common/assets/sfx/ice.wav"
+dest_files=["res://.godot/imported/ice.wav-2c2fd366e726b6ec3327f55a4701a5c6.sample"]
 
 [params]
 

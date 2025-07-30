@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dqjiak4d0tasq"
-path="res://.godot/imported/sand.wav-370f8d8b7facf6c6158c872a898932fa.sample"
+path="res://.godot/imported/sand.wav-b49d0d273b48701efea6df10664bd1a4.sample"
 
 [deps]
 
-source_file="res://godot_material_footsteps_examples/assets/sfx/sand.wav"
-dest_files=["res://.godot/imported/sand.wav-370f8d8b7facf6c6158c872a898932fa.sample"]
+source_file="res://godot_material_footsteps_examples/common/assets/sfx/sand.wav"
+dest_files=["res://.godot/imported/sand.wav-b49d0d273b48701efea6df10664bd1a4.sample"]
 
 [params]
 

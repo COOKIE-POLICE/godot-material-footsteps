@@ -40,6 +40,7 @@ var chain_of_responsibility: RefCounted
 var count_up_timer: RefCounted
 var meta_data_material_detector: RefCounted
 var grid_map_material_detector: RefCounted
+var h_terrain_material_detector: RefCounted
 var landing_detector: RefCounted
 
 var movement_sound_map: Dictionary
@@ -72,6 +73,7 @@ func _create_components() -> void:
 	count_up_timer = preload(SCRIPTS_PATH + "count_up_timer.gd").new()
 	meta_data_material_detector = preload(SCRIPTS_PATH + "material_detectors/meta_data_material_detector.gd").new()
 	grid_map_material_detector = preload(SCRIPTS_PATH + "material_detectors/grid_map_material_detector.gd").new()
+	h_terrain_material_detector = preload(SCRIPTS_PATH + "material_detectors/h_terrain_material_detector.gd").new()
 	landing_detector = preload(SCRIPTS_PATH + "landing_detector.gd").new()
 
 func _setup_sound_maps() -> void:
@@ -88,13 +90,13 @@ func _setup_sound_maps() -> void:
 func _configure_material_detectors() -> void:
 	chain_of_responsibility.add_handler(grid_map_material_detector.detect)
 	chain_of_responsibility.add_handler(meta_data_material_detector.detect)
+	chain_of_responsibility.add_handler(h_terrain_material_detector.detect)
 	
 	var shared_properties = {
 		"accepted_meta_data_names": accepted_meta_data_names,
 		"all_possible_material_names": all_possible_material_names
 	}
-	
-	for detector in [meta_data_material_detector, grid_map_material_detector]:
+	for detector in [meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector]:
 		for property_name in shared_properties:
 			detector.set(property_name, shared_properties[property_name])
 

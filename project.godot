@@ -8,6 +8,12 @@
 
 config_version=5
 
+[ambientcg]
+
+extract_path="res://AmbientCG/Downloads"
+material_file_directory="res://AmbientCG/Materials"
+environment_file_directory="res://AmbientCG/Environments"
+
 [application]
 
 config/name="Godot Material Footsteps"
@@ -18,4 +24,4 @@ config/icon="uid://o07cdoruhoqq"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_material_footsteps/plugin.cfg")
+enabled=PackedStringArray("res://addons/ambientcg/plugin.cfg", "res://addons/godot_material_footsteps/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bs72ogkvdd7d6"]
 
-[ext_resource type="Script" uid="uid://b2bfe7lqfj3kk" path="res://godot_material_footsteps_examples/proto_controller/proto_controller.gd" id="1_3nd74"]
+[ext_resource type="Script" uid="uid://b2bfe7lqfj3kk" path="res://godot_material_footsteps_examples/common/proto_controller/proto_controller.gd" id="1_3nd74"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iof21"]
 albedo_color = Color(0.91806, 0.575202, 0.222449, 1)

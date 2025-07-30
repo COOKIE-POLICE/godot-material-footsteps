@@ -1,0 +1,179 @@
+[gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
+
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://godot_material_footsteps_examples/common/proto_controller/proto_controller.tscn" id="1_7udwx"]
+[ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_3aud2"]
+[ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep.gd" id="3_38ar0"]
+[ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://godot_material_footsteps_examples/common/assets/sfx/concrete.wav" id="4_5ixv0"]
+[ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://godot_material_footsteps_examples/common/assets/sfx/grass.wav" id="5_dwvi1"]
+[ext_resource type="AudioStream" uid="uid://br8x5hd7o3ala" path="res://godot_material_footsteps_examples/common/assets/sfx/ice.wav" id="6_gxqt7"]
+[ext_resource type="AudioStream" uid="uid://dqjiak4d0tasq" path="res://godot_material_footsteps_examples/common/assets/sfx/sand.wav" id="7_1wapn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7udwx"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_3aud2"]
+sky_material = SubResource("ProceduralSkyMaterial_7udwx")
+
+[sub_resource type="Environment" id="Environment_38ar0"]
+background_mode = 2
+sky = SubResource("Sky_3aud2")
+tonemap_mode = 3
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jpgeo"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_074xi"]
+size = Vector2(3, 3)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1pj"]
+points = PackedVector3Array(-1.5, 0, -1.5, -1.5, 0, 1.5, 1.5, 0, -1.5, 1.5, 0, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ks1pj"]
+albedo_color = Color(0.661149, 0.863634, 0.947731, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1y8bk"]
+size = Vector2(3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7jk0"]
+albedo_color = Color(0.43957, 0.400456, 0.180308, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ratao"]
+size = Vector2(3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uu4cd"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jpgeo"]
+size = Vector2(3, 3)
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_jh48y"]
+loop = false
+stream_count = 1
+stream_0 = ExtResource("4_5ixv0")
+
+[sub_resource type="Resource" id="Resource_v0wfk"]
+script = ExtResource("3_38ar0")
+material_name = "Concrete"
+movement_sound = SubResource("AudioStreamPlaylist_jh48y")
+landing_sound = ExtResource("4_5ixv0")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_k4ydx"]
+script = ExtResource("3_38ar0")
+material_name = "Grass"
+movement_sound = ExtResource("5_dwvi1")
+landing_sound = ExtResource("5_dwvi1")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_722kn"]
+script = ExtResource("3_38ar0")
+material_name = "Ice"
+movement_sound = ExtResource("6_gxqt7")
+landing_sound = ExtResource("6_gxqt7")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_3s6yp"]
+script = ExtResource("3_38ar0")
+material_name = "Sand"
+movement_sound = ExtResource("7_1wapn")
+landing_sound = ExtResource("7_1wapn")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[node name="Example1MetaData" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_38ar0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Map" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Grass" type="MeshInstance3D" parent="Map"]
+material_override = SubResource("StandardMaterial3D_jpgeo")
+mesh = SubResource("PlaneMesh_074xi")
+skeleton = NodePath("../..")
+
+[node name="Grass" type="StaticBody3D" parent="Map/Grass"]
+metadata/surface_type = "Grass"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Grass/Grass"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Ice" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+material_override = SubResource("StandardMaterial3D_ks1pj")
+mesh = SubResource("PlaneMesh_1y8bk")
+skeleton = NodePath("../..")
+
+[node name="Ice" type="StaticBody3D" parent="Map/Ice"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ice/Ice"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+metadata/surface_type = "Ice"
+
+[node name="Sand" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+material_override = SubResource("StandardMaterial3D_f7jk0")
+mesh = SubResource("PlaneMesh_ratao")
+skeleton = NodePath("../..")
+metadata/surface_type = "Sand"
+
+[node name="Sand" type="StaticBody3D" parent="Map/Sand"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Sand/Sand"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Default" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+material_override = SubResource("StandardMaterial3D_uu4cd")
+mesh = SubResource("PlaneMesh_jpgeo")
+skeleton = NodePath("../..")
+
+[node name="Default" type="StaticBody3D" parent="Map/Default"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Default/Default"]
+shape = SubResource("ConvexPolygonShape3D_ks1pj")
+
+[node name="Player" parent="." instance=ExtResource("1_7udwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.90089, 0.808552, 0)
+can_sprint = true
+base_speed = 4.0
+sprint_speed = 8.0
+input_sprint = "ui_focus_next"
+
+[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("character")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.758647, 0)
+script = ExtResource("2_3aud2")
+character = NodePath("..")
+material_footstep_sound_map = Array[ExtResource("3_38ar0")]([SubResource("Resource_v0wfk"), SubResource("Resource_k4ydx"), SubResource("Resource_722kn"), SubResource("Resource_3s6yp")])
+default_material_footstep_movement_sound = ExtResource("4_5ixv0")
+default_material_footstep_landing_sound = ExtResource("4_5ixv0")
+character_max_speed = 8.0
+metadata/_custom_type_script = "uid://jy4sym0dop3s"
+
+[node name="Tip" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3)
+pixel_size = 0.02
+text = "Tab To Sprint"
+
+[node name="Tip2" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 21, 3, 0)
+pixel_size = 0.01
+text = "This is Example 1. This solution uses the Godot meta data system. You will see in the editor that every single ancestor/descendant or even the CollisionBody themselves have a meta data called surface_type with a string matching the sound map of the MaterialFootstepPlayer3D nodes in the player."
+autowrap_mode = 3
+
+[node name="Tip3" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 12, 3, 4)
+pixel_size = 0.01
+text = "Wait, you are using HTerrain addon by Zylann or the built-in GridMap? No problem, my addon has support for those nodes too. Check the other examples for more info, or read the GitHub README like a sane person would (Granted if my lazy bum actually updated the README by the time you are reading this."
+autowrap_mode = 3
+
+[node name="Tip4" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5.15454, 3, 4)
+pixel_size = 0.01
+text = "I won't document HTerrain support that much, but my implementation only supports Classic4 shader, cuz HTerrain hella broken it seems cuz I can't use any other shaders."
+autowrap_mode = 3

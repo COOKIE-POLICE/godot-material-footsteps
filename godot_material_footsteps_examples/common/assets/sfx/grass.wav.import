@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cy26rdy8dg0o6"
-path="res://.godot/imported/grass.wav-f9a50b192e5edc6247b8a73e342fabc3.sample"
+path="res://.godot/imported/grass.wav-dc41f1003d6ca222bb56c9986075cbf9.sample"
 
 [deps]
 
-source_file="res://godot_material_footsteps_examples/assets/sfx/grass.wav"
-dest_files=["res://.godot/imported/grass.wav-f9a50b192e5edc6247b8a73e342fabc3.sample"]
+source_file="res://godot_material_footsteps_examples/common/assets/sfx/grass.wav"
+dest_files=["res://.godot/imported/grass.wav-dc41f1003d6ca222bb56c9986075cbf9.sample"]
 
 [params]
 
