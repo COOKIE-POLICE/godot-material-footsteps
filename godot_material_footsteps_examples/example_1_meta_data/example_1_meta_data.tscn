@@ -175,5 +175,5 @@ autowrap_mode = 3
 [node name="Tip4" type="Label3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5.15454, 3, 4)
 pixel_size = 0.01
-text = "I won't document HTerrain support that much, but my implementation only supports Classic4 shader, cuz HTerrain hella broken it seems cuz I can't use any other shaders."
+text = "I won't document HTerrain support that much, but my implementation only supports Classic4 shader, cuz HTerrain hella broken it seems cuz I can't use any other shaders. Detection on HTerrain works through index so make sure the sound map has something like 0, 1, 2, 3 as names."
 autowrap_mode = 3
