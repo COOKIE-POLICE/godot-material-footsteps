@@ -18,9 +18,9 @@ A Godot 3D addon for automatically playing footstep sounds based on the material
   - [Step 1: Add the Footstep Player](#step-1-add-the-footstep-player)
   - [Step 2: Configure the Footstep Player](#step-2-configure-the-footstep-player)
   - [Step 3: Set Up Your Surfaces](#step-3-set-up-your-surfaces)
-    - [Method A: Using Metadata (Recommended)](#method-a-using-metadata-recommended)
-    - [Method B: Using GridMap](#method-b-using-gridmap)
-    - [Method C: Using HTerrain Classic4 Shader](#method-c-using-hterrain-classic4-shader)
+	- [Method A: Using Metadata (Recommended)](#method-a-using-metadata-recommended)
+	- [Method B: Using GridMap](#method-b-using-gridmap)
+	- [Method C: Using HTerrain Classic4 Shader](#method-c-using-hterrain-classic4-shader)
   - [Step 4: Handle Multiple Sounds](#step-4-handle-multiple-sounds)
 - [Support](#support)
 

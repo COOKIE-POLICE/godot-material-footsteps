@@ -1,3 +1,4 @@
+@tool
 @icon("../assets/editor_icons/icon.png")
 class_name MaterialFootstepPlayer3D
 extends RayCast3D
@@ -10,14 +11,14 @@ enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 @export_group("Core Settings")
 @export var character: CharacterBody3D
 @export var material_footstep_sound_map: Array[MaterialFootstep]
-@export var default_material_footstep_movement_sound: AudioStream
-@export var default_material_footstep_landing_sound: AudioStream
 
-@export_group("Optional Overrides")
+@export_group("Override Settings")
 @export var audio_player: AudioStreamPlayer3D
 
 @export_group("Advanced Settings")
 @export var accepted_meta_data_names: PackedStringArray = ["surface_type"]
+@export var default_material_footstep_movement_sound: AudioStream
+@export var default_material_footstep_landing_sound: AudioStream
 
 @export_group("Auto Play Settings")
 @export var auto_play_type: AutoPlayType = AutoPlayType.DYNAMIC
@@ -29,7 +30,7 @@ enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 @export_subgroup("Static Auto Play Settings")
 @export var auto_play_delay: float = 0.45
 
-@export_group("Debug")
+@export_group("Debug Settings")
 @export var debug: bool = true
 
 # --- CONSTANTS ---
@@ -51,7 +52,8 @@ var last_speed_ratio: float = -1.0
 
 # --- INITIALIZATION ---
 func _ready() -> void:
-	_validate_required_properties()
+	if Engine.is_editor_hint():
+		return
 	_create_components()
 	_setup_sound_maps()
 	_configure_material_detectors()
@@ -59,14 +61,18 @@ func _ready() -> void:
 	_connect_signals()
 	count_up_timer.start()
 
-func _validate_required_properties() -> void:
-	if not OS.is_debug_build():
-		return
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings = []
+	if not character:
+		warnings.append("%s requires a character" % get_script().get_global_name())
+	if not material_footstep_sound_map:
+		warnings.append("%s requires a material footstep sound map" % get_script().get_global_name())
+	return warnings
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EDITOR_POST_SAVE:
+		update_configuration_warnings()
 	
-	assert(character != null, "Character is required")
-	assert(material_footstep_sound_map != null, "Material footstep sound map is required") 
-	assert(default_material_footstep_movement_sound != null, "Default movement sound is required")
-	assert(default_material_footstep_landing_sound != null, "Default landing sound is required")
 
 func _create_components() -> void:
 	chain_of_responsibility = preload(SCRIPTS_PATH + "chain_of_responsibility.gd").new()
@@ -110,6 +116,8 @@ func _connect_signals() -> void:
 
 # --- MAIN LOOP ---
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	landing_detector.update(character)
 	
 	if auto_play_type == AutoPlayType.DISABLED:
@@ -160,14 +168,15 @@ func play_footstep(type: FootstepType) -> void:
 	
 	var material_name = _detect_surface_material()
 	var sound_stream = _get_sound_for_material(material_name, type)
-	
-	audio_player.stream = sound_stream
-	audio_player.play()
-	
-	if material_name:
-		_debug_log("Playing sound for %s: %s" % [material_name, audio_player.stream.resource_path])
+	if sound_stream:
+		audio_player.stream = sound_stream
+		audio_player.play()
+		if material_name:
+			_debug_log("Playing sound for %s: %s" % [material_name, audio_player.stream.resource_path])
+		else:
+			_debug_log("Playing default footstep sound: %s" % [audio_player.stream.resource_path])
 	else:
-		_debug_log("Playing default footstep sound: %s" % [audio_player.stream.resource_path])
+		_debug_log("No sound availible, playing no sound.")
 
 func _detect_surface_material() -> String:
 	var collider = get_collider()
