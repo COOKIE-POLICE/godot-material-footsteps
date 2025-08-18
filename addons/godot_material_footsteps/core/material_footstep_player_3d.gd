@@ -15,8 +15,14 @@ enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 @export_group("Override Settings")
 @export var audio_player: AudioStreamPlayer3D
 
+@export_group("Feature Settings")
+@export var grid_map_material_detection: bool = true
+@export var meta_data_material_detection: bool = true
+@export var h_terrain_material_detection: bool = true
+
 @export_group("Advanced Settings")
 @export var accepted_meta_data_names: PackedStringArray = ["surface_type"]
+@export_group("Default Sounds Settings")
 @export var default_material_footstep_movement_sound: AudioStream
 @export var default_material_footstep_landing_sound: AudioStream
 
@@ -94,9 +100,12 @@ func _setup_sound_maps() -> void:
 		all_possible_material_names.append(material_name)
 
 func _configure_material_detectors() -> void:
-	chain_of_responsibility.add_handler(grid_map_material_detector.detect)
-	chain_of_responsibility.add_handler(meta_data_material_detector.detect)
-	chain_of_responsibility.add_handler(h_terrain_material_detector.detect)
+	if grid_map_material_detection:
+		chain_of_responsibility.add_handler(grid_map_material_detector.detect)
+	if meta_data_material_detection:
+		chain_of_responsibility.add_handler(meta_data_material_detector.detect)
+	if h_terrain_material_detection:
+		chain_of_responsibility.add_handler(h_terrain_material_detector.detect)
 	
 	var shared_properties = {
 		"accepted_meta_data_names": accepted_meta_data_names,
