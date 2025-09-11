@@ -3,7 +3,7 @@ extends "./material_detector.gd"
 # --- CONFIGURATION ---
 var accepted_meta_data_names: PackedStringArray = ["surface_type"]
 var all_possible_material_names: PackedStringArray = []
-
+var caching: bool = true
 # --- INTERNAL STATE ---
 var material_cache: Dictionary = {}
 var valid_materials_set: Dictionary = {}
@@ -29,6 +29,8 @@ func clear_cache() -> void:
 
 # --- PRIVATE METHODS ---
 func _get_cached_material(instance_id: int) -> Variant:
+	if not caching: 
+		return
 	if not material_cache.has(instance_id):
 		return null
 	
@@ -40,6 +42,8 @@ func _get_cached_material(instance_id: int) -> Variant:
 	return null
 
 func _cache_material(instance_id: int, material: Variant) -> void:
+	if not caching: 
+		return
 	material_cache[instance_id] = material if material else ""
 
 func _detect_material_hierarchy(collider: Object) -> Variant:
