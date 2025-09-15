@@ -1,12 +1,12 @@
 extends "./material_detector.gd"
 
-# --- CONFIGURATION ---
+#region CONFIGURATION
 var all_possible_material_names: PackedStringArray = []
-
-# --- INTERNAL STATE ---
+#endregion
+#region INTERNAL STATE
 var valid_materials_set: Dictionary = {}
-
-# --- PUBLIC API ---
+#endregion
+#region PUBLIC API
 func detect(raycast: RayCast3D) -> Variant:
 	var collider = raycast.get_collider()
 	if not collider:
@@ -24,8 +24,8 @@ func detect(raycast: RayCast3D) -> Variant:
 			return material
 	
 	return null
-
-# --- PRIVATE METHODS ---
+#endregion
+#region PRIVATE METHODS
 func _detect_hterrain_material(terrain: Object, world_pos: Vector3) -> Variant:
 	_ensure_materials_set_initialized()
 	
@@ -88,3 +88,4 @@ func _ensure_materials_set_initialized() -> void:
 	if valid_materials_set.is_empty() and not all_possible_material_names.is_empty():
 		for material_name in all_possible_material_names:
 			valid_materials_set[material_name] = true
+#endregion

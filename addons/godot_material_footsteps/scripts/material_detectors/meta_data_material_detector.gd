@@ -1,14 +1,17 @@
 extends "./material_detector.gd"
 
-# --- CONFIGURATION ---
+#region CONFIGURATION
 var accepted_meta_data_names: PackedStringArray = ["surface_type"]
 var all_possible_material_names: PackedStringArray = []
 var caching: bool = true
-# --- INTERNAL STATE ---
+#endregion
+
+#region INTERNAL STATE
 var material_cache: Dictionary = {}
 var valid_materials_set: Dictionary = {}
+#endregion
 
-# --- PUBLIC API ---
+#region PUBLIC API
 func detect(raycast: RayCast3D) -> Variant:
 	var collider = raycast.get_collider()
 	if not collider:
@@ -26,8 +29,9 @@ func detect(raycast: RayCast3D) -> Variant:
 
 func clear_cache() -> void:
 	material_cache.clear()
+#endregion
 
-# --- PRIVATE METHODS ---
+#region PRIVATE METHODS
 func _get_cached_material(instance_id: int) -> Variant:
 	if not caching: 
 		return
@@ -111,3 +115,4 @@ func _ensure_materials_set_initialized() -> void:
 	if valid_materials_set.is_empty() and not all_possible_material_names.is_empty():
 		for material_name in all_possible_material_names:
 			valid_materials_set[material_name] = true
+#endregion
