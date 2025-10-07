@@ -19,7 +19,7 @@ environment_file_directory="res://AmbientCG/Environments"
 config/name="Godot Material Footsteps"
 config/version="2.0.0"
 config/tags=PackedStringArray("addons")
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://o07cdoruhoqq"
 
 [editor_plugins]

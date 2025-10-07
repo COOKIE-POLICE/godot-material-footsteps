@@ -9,53 +9,53 @@
 <br />
 <div align="center">
   <a href="https://github.com/COOKIE-POLICE/godot-material-footsteps">
-    <img src="addons/godot_material_footsteps/assets/editor_icons/icon.png" alt="Logo" width="128" height="128">
+	<img src="addons/godot_material_footsteps/assets/editor_icons/icon.png" alt="Logo" width="128" height="128">
   </a>
 
   <h3 align="center">Godot Material Footsteps</h3>
 
   <p align="center">
-    Automatically play footstep sounds based on surface materials in Godot 4
-    <br />
-    <a href="https://github.com/COOKIE-POLICE/godot-material-footsteps"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://youtu.be/zFgYhZyGRw0">View Demo</a>
-    ·
-    <a href="https://github.com/COOKIE-POLICE/godot-material-footsteps/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    ·
-    <a href="https://github.com/COOKIE-POLICE/godot-material-footsteps/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+	Automatically play footstep sounds based on surface materials in Godot 4
+	<br />
+	<a href="https://github.com/COOKIE-POLICE/godot-material-footsteps"><strong>Explore the docs »</strong></a>
+	<br />
+	<br />
+	<a href="https://youtu.be/zFgYhZyGRw0">View Demo</a>
+	·
+	<a href="https://github.com/COOKIE-POLICE/godot-material-footsteps/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+	·
+	<a href="https://github.com/COOKIE-POLICE/godot-material-footsteps/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#features">Features</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#usage">Usage</a>
-      <ul>
-        <li><a href="#step-1-add-the-footstep-player">Step 1: Add the Footstep Player</a></li>
-        <li><a href="#step-2-configure-the-materialfootstepplayer3d">Step 2: Configure the Footstep Player</a></li>
-        <li><a href="#step-3-set-up-your-surfaces">Step 3: Set Up Your Surfaces</a></li>
-      </ul>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+	<li>
+	  <a href="#about-the-project">About The Project</a>
+	  <ul>
+		<li><a href="#built-with">Built With</a></li>
+		<li><a href="#features">Features</a></li>
+	  </ul>
+	</li>
+	<li>
+	  <a href="#getting-started">Getting Started</a>
+	  <ul>
+		<li><a href="#installation">Installation</a></li>
+	  </ul>
+	</li>
+	<li>
+	  <a href="#usage">Usage</a>
+	  <ul>
+		<li><a href="#step-1-add-the-footstep-player">Step 1: Add the Footstep Player</a></li>
+		<li><a href="#step-2-configure-the-materialfootstepplayer3d">Step 2: Configure the Footstep Player</a></li>
+		<li><a href="#step-3-set-up-your-surfaces">Step 3: Set Up Your Surfaces</a></li>
+	  </ul>
+	</li>
+	<li><a href="#roadmap">Roadmap</a></li>
+	<li><a href="#contributing">Contributing</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -135,21 +135,21 @@ This is where you define which sounds play on which surfaces.
 ```
 Inspector → MaterialFootstepPlayer3D
 └── material_footstep_sound_map: Array[MaterialFootstep]
-    ├── [0] MaterialFootstep
-    │   ├── material_name: "wood"
-    │   └── sounds: Array[AudioStreamPlaylist]
-    │       ├── wood_step_01.wav
-    │       ├── wood_step_02.wav
-    │       └── wood_step_03.wav
-    ├── [1] MaterialFootstep
-    │   ├── material_name: "stone"
-    │   └── sounds: Array[AudioStreamRandomizer]
-    │       ├── stone_step_01.wav
-    │       └── stone_step_02.wav
-    └── [2] MaterialFootstep
-        ├── material_name: "grass"
-        └── sounds: Array[AudioStream]
-            └── grass_step_01.wav
+	├── [0] MaterialFootstep
+	│   ├── material_name: "wood"
+	│   └── sounds: Array[AudioStreamPlaylist]
+	│       ├── wood_step_01.wav
+	│       ├── wood_step_02.wav
+	│       └── wood_step_03.wav
+	├── [1] MaterialFootstep
+	│   ├── material_name: "stone"
+	│   └── sounds: Array[AudioStreamRandomizer]
+	│       ├── stone_step_01.wav
+	│       └── stone_step_02.wav
+	└── [2] MaterialFootstep
+		├── material_name: "grass"
+		└── sounds: Array[AudioStream]
+			└── grass_step_01.wav
 ```
 
 #### 2.3 Set Default Sound
@@ -159,9 +159,9 @@ Configure `default_material_footstep_sound` as a fallback.
 ```
 Inspector → MaterialFootstepPlayer3D
 └── default_material_footstep_sound: MaterialFootstep
-    ├── material_name: "default"
-    └── sounds: Array[AudioStream]
-        └── generic_step.wav
+	├── material_name: "default"
+	└── sounds: Array[AudioStream]
+		└── generic_step.wav
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -192,10 +192,10 @@ Level
 │       └── Metadata:
 │           surface_type: "stone"
 └── GrassField (StaticBody3D)
-    ├── CollisionShape3D
-    └── MeshInstance3D
-        └── Metadata:
-            surface_type: "grass"
+	├── CollisionShape3D
+	└── MeshInstance3D
+		└── Metadata:
+			surface_type: "grass"
 ```
 
 

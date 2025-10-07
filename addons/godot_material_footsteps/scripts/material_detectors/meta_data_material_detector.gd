@@ -1,17 +1,12 @@
 extends "./material_detector.gd"
 
-#region CONFIGURATION
 var accepted_meta_data_names: PackedStringArray = ["surface_type"]
 var all_possible_material_names: PackedStringArray = []
 var caching: bool = true
-#endregion
 
-#region INTERNAL STATE
-var material_cache: Dictionary = {}
-var valid_materials_set: Dictionary = {}
-#endregion
+var _material_cache: Dictionary = {}
+var _valid_materials_set: Dictionary = {}
 
-#region PUBLIC API
 func detect(raycast: RayCast3D) -> Variant:
 	var collider = raycast.get_collider()
 	if not collider:
@@ -28,27 +23,25 @@ func detect(raycast: RayCast3D) -> Variant:
 	return detected_material
 
 func clear_cache() -> void:
-	material_cache.clear()
-#endregion
+	_material_cache.clear()
 
-#region PRIVATE METHODS
 func _get_cached_material(instance_id: int) -> Variant:
-	if not caching: 
-		return
-	if not material_cache.has(instance_id):
+	if not caching:
+		return null
+	if not _material_cache.has(instance_id):
 		return null
 	
 	var obj = instance_from_id(instance_id)
 	if is_instance_valid(obj):
-		return material_cache[instance_id]
+		return _material_cache[instance_id]
 	
-	material_cache.erase(instance_id)
+	_material_cache.erase(instance_id)
 	return null
 
 func _cache_material(instance_id: int, material: Variant) -> void:
-	if not caching: 
+	if not caching:
 		return
-	material_cache[instance_id] = material if material else ""
+	_material_cache[instance_id] = material if material else ""
 
 func _detect_material_hierarchy(collider: Object) -> Variant:
 	var material = _detect_material_on_object(collider)
@@ -70,49 +63,35 @@ func _detect_material_on_object(obj: Object) -> Variant:
 	for meta_name in accepted_meta_data_names:
 		if obj.has_meta(meta_name):
 			var material_name = obj.get_meta(meta_name)
-			if valid_materials_set.has(material_name):
+			if _valid_materials_set.has(material_name):
 				return material_name
 	
 	return null
 
-func _detect_in_descendants(parent: Object) -> Variant:
+func _detect_in_descendants(parent: Node) -> Variant:
 	if not parent:
 		return null
 	
-	var stack: Array[Object] = [parent]
-	var visited: Dictionary = {parent.get_instance_id(): true}
-	
-	while not stack.is_empty():
-		var current = stack.pop_back()
-		
-		for child in current.get_children():
-			var child_id = child.get_instance_id()
-			if visited.has(child_id):
-				continue
-			
-			visited[child_id] = true
-			
-			var material = _detect_material_on_object(child)
-			if material:
-				return material
-			
-			stack.push_back(child)
+	var children = parent.find_children("*", "", true, false)
+	for child in children:
+		var material = _detect_material_on_object(child)
+		if material:
+			return material
 	
 	return null
 
-func _detect_in_ancestors(obj: Object) -> Variant:
-	var current = obj.get_parent() if obj else null
-	
+func _detect_in_ancestors(node: Node) -> Variant:
+	var current = node.get_parent() if node else null
+
 	while current:
 		var material = _detect_material_on_object(current)
 		if material:
 			return material
 		current = current.get_parent()
-	
+
 	return null
 
 func _ensure_materials_set_initialized() -> void:
-	if valid_materials_set.is_empty() and not all_possible_material_names.is_empty():
+	if _valid_materials_set.is_empty() and not all_possible_material_names.is_empty():
 		for material_name in all_possible_material_names:
-			valid_materials_set[material_name] = true
-#endregion
+			_valid_materials_set[material_name] = true
