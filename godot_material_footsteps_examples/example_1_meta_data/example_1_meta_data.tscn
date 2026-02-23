@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://chv6bdwwsgg8o"]
+[gd_scene format=3 uid="uid://chv6bdwwsgg8o"]
 
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://godot_material_footsteps_examples/common/proto_controller/proto_controller.tscn" id="1_7udwx"]
 [ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_3aud2"]
@@ -80,100 +80,101 @@ movement_sound = ExtResource("7_1wapn")
 landing_sound = ExtResource("7_1wapn")
 metadata/_custom_type_script = "uid://cfs28riswyejx"
 
-[node name="Example1MetaData" type="Node3D"]
+[node name="Example1MetaData" type="Node3D" unique_id=82534972]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=133593054]
 environment = SubResource("Environment_38ar0")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=67892502]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Map" type="Node3D" parent="."]
+[node name="Map" type="Node3D" parent="." unique_id=1613255697]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="Grass" type="MeshInstance3D" parent="Map"]
+[node name="Grass" type="MeshInstance3D" parent="Map" unique_id=180043993]
 material_override = SubResource("StandardMaterial3D_jpgeo")
 mesh = SubResource("PlaneMesh_074xi")
 skeleton = NodePath("../..")
 
-[node name="Grass" type="StaticBody3D" parent="Map/Grass"]
+[node name="Grass" type="StaticBody3D" parent="Map/Grass" unique_id=1925922062]
 metadata/surface_type = "Grass"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Grass/Grass"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Grass/Grass" unique_id=2065652999]
 shape = SubResource("ConvexPolygonShape3D_ks1pj")
 
-[node name="Ice" type="MeshInstance3D" parent="Map"]
+[node name="Ice" type="MeshInstance3D" parent="Map" unique_id=1422141275]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
 material_override = SubResource("StandardMaterial3D_ks1pj")
 mesh = SubResource("PlaneMesh_1y8bk")
 skeleton = NodePath("../..")
 
-[node name="Ice" type="StaticBody3D" parent="Map/Ice"]
+[node name="Ice" type="StaticBody3D" parent="Map/Ice" unique_id=1877325146]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ice/Ice"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ice/Ice" unique_id=1782282523]
 shape = SubResource("ConvexPolygonShape3D_ks1pj")
 metadata/surface_type = "Ice"
 
-[node name="Sand" type="MeshInstance3D" parent="Map"]
+[node name="Sand" type="MeshInstance3D" parent="Map" unique_id=2137445313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
 material_override = SubResource("StandardMaterial3D_f7jk0")
 mesh = SubResource("PlaneMesh_ratao")
 skeleton = NodePath("../..")
 metadata/surface_type = "Sand"
 
-[node name="Sand" type="StaticBody3D" parent="Map/Sand"]
+[node name="Sand" type="StaticBody3D" parent="Map/Sand" unique_id=276965491]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Sand/Sand"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Sand/Sand" unique_id=1164016794]
 shape = SubResource("ConvexPolygonShape3D_ks1pj")
 
-[node name="Default" type="MeshInstance3D" parent="Map"]
+[node name="Default" type="MeshInstance3D" parent="Map" unique_id=1167482257]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
 material_override = SubResource("StandardMaterial3D_uu4cd")
 mesh = SubResource("PlaneMesh_jpgeo")
 skeleton = NodePath("../..")
 
-[node name="Default" type="StaticBody3D" parent="Map/Default"]
+[node name="Default" type="StaticBody3D" parent="Map/Default" unique_id=2053666596]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Default/Default"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Default/Default" unique_id=404551787]
 shape = SubResource("ConvexPolygonShape3D_ks1pj")
 
-[node name="Player" parent="." instance=ExtResource("1_7udwx")]
+[node name="Player" parent="." unique_id=1571465375 instance=ExtResource("1_7udwx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.90089, 0.808552, 0)
 can_sprint = true
 base_speed = 4.0
 sprint_speed = 8.0
 input_sprint = "ui_focus_next"
 
-[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" node_paths=PackedStringArray("character")]
+[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" unique_id=1383318309 node_paths=PackedStringArray("character")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.758647, 0)
 script = ExtResource("2_3aud2")
 character = NodePath("..")
 material_footstep_sound_map = Array[ExtResource("3_38ar0")]([SubResource("Resource_v0wfk"), SubResource("Resource_k4ydx"), SubResource("Resource_722kn"), SubResource("Resource_3s6yp")])
+surface_material_detection = null
 accepted_meta_data_names = PackedStringArray("surface_type")
 default_material_footstep_movement_sound = ExtResource("4_5ixv0")
 default_material_footstep_landing_sound = ExtResource("4_5ixv0")
 character_max_speed = 8.0
 metadata/_custom_type_script = "uid://jy4sym0dop3s"
 
-[node name="Tip" type="Label3D" parent="."]
+[node name="Tip" type="Label3D" parent="." unique_id=1755055875]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3)
 pixel_size = 0.02
 text = "Tab To Sprint"
 
-[node name="Tip2" type="Label3D" parent="."]
+[node name="Tip2" type="Label3D" parent="." unique_id=2087922439]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 21, 3, 0)
 pixel_size = 0.01
 text = "This is Example 1. This solution uses the Godot meta data system. You will see in the editor that every single ancestor/descendant or even the CollisionBody themselves have a meta data called surface_type with a string matching the sound map of the MaterialFootstepPlayer3D nodes in the player."
 autowrap_mode = 3
 
-[node name="Tip3" type="Label3D" parent="."]
+[node name="Tip3" type="Label3D" parent="." unique_id=1746359329]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 12, 3, 4)
 pixel_size = 0.01
 text = "Wait, you are using HTerrain addon by Zylann or the built-in GridMap? No problem, my addon has support for those nodes too. Check the other examples for more info, or read the GitHub README like a sane person would (Granted if my lazy bum actually updated the README by the time you are reading this."
 autowrap_mode = 3
 
-[node name="Tip4" type="Label3D" parent="."]
+[node name="Tip4" type="Label3D" parent="." unique_id=2096210877]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5.15454, 3, 4)
 pixel_size = 0.01
 text = "I won't document HTerrain support that much, but my implementation only supports Classic4 shader, cuz HTerrain hella broken it seems cuz I can't use any other shaders. Detection on HTerrain works through index so make sure the sound map has something like 0, 1, 2, 3 as names."

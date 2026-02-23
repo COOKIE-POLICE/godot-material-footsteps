@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://dbvw7ye3p7aem"]
+
+[ext_resource type="Material" path="res://godot_material_footsteps_examples/example_3_surface/materials/Grass.tres" id="1_6pvjx"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://godot_material_footsteps_examples/common/proto_controller/proto_controller.tscn" id="1_proto"]
+[ext_resource type="Material" uid="uid://fdohugok7kof" path="res://godot_material_footsteps_examples/example_3_surface/materials/Ice.tres" id="1_qpn06"]
+[ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="2_player"]
+[ext_resource type="Material" path="res://godot_material_footsteps_examples/example_3_surface/materials/Sand.tres" id="3_eq65f"]
+[ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep.gd" id="3_footstep"]
+[ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://godot_material_footsteps_examples/common/assets/sfx/concrete.wav" id="4_concrete"]
+[ext_resource type="Material" path="res://godot_material_footsteps_examples/example_3_surface/materials/Concrete.tres" id="4_ufe5p"]
+[ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://godot_material_footsteps_examples/common/assets/sfx/grass.wav" id="5_grass"]
+[ext_resource type="AudioStream" uid="uid://br8x5hd7o3ala" path="res://godot_material_footsteps_examples/common/assets/sfx/ice.wav" id="6_ice"]
+[ext_resource type="AudioStream" uid="uid://dqjiak4d0tasq" path="res://godot_material_footsteps_examples/common/assets/sfx/sand.wav" id="7_sand"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+tonemap_mode = 3
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tile"]
+size = Vector2(3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tile"]
+size = Vector3(3, 0.2, 3)
+
+[sub_resource type="Resource" id="Resource_Concrete"]
+script = ExtResource("3_footstep")
+material_name = "Concrete"
+movement_sound = ExtResource("4_concrete")
+landing_sound = ExtResource("4_concrete")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_Grass"]
+script = ExtResource("3_footstep")
+material_name = "Grass"
+movement_sound = ExtResource("5_grass")
+landing_sound = ExtResource("5_grass")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_Ice"]
+script = ExtResource("3_footstep")
+material_name = "Ice"
+movement_sound = ExtResource("6_ice")
+landing_sound = ExtResource("6_ice")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[sub_resource type="Resource" id="Resource_Sand"]
+script = ExtResource("3_footstep")
+material_name = "Sand"
+movement_sound = ExtResource("7_sand")
+landing_sound = ExtResource("7_sand")
+metadata/_custom_type_script = "uid://cfs28riswyejx"
+
+[node name="Example3Surface" type="Node3D" unique_id=432402912]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=174526059]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1034226774]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Map" type="Node3D" parent="." unique_id=67810328]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Grass" type="StaticBody3D" parent="Map" unique_id=1160992169]
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Grass" unique_id=186214757]
+material_override = ExtResource("1_6pvjx")
+mesh = SubResource("PlaneMesh_tile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Grass" unique_id=574566363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_tile")
+
+[node name="Ice" type="StaticBody3D" parent="Map" unique_id=1890316783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Ice" unique_id=1773190418]
+material_override = ExtResource("1_qpn06")
+mesh = SubResource("PlaneMesh_tile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ice" unique_id=1266166231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_tile")
+
+[node name="Sand" type="StaticBody3D" parent="Map" unique_id=1385350842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Sand" unique_id=526456283]
+material_override = ExtResource("3_eq65f")
+mesh = SubResource("PlaneMesh_tile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Sand" unique_id=147750535]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_tile")
+
+[node name="Concrete" type="StaticBody3D" parent="Map" unique_id=123634427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Concrete" unique_id=1936968438]
+material_override = ExtResource("4_ufe5p")
+mesh = SubResource("PlaneMesh_tile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Concrete" unique_id=103183604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_tile")
+
+[node name="Player" parent="." unique_id=2002667196 instance=ExtResource("1_proto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 0.81, 0)
+can_sprint = true
+base_speed = 4.0
+sprint_speed = 8.0
+input_sprint = "ui_focus_next"
+
+[node name="MaterialFootstepPlayer3D" type="RayCast3D" parent="Player" unique_id=683340421 node_paths=PackedStringArray("character")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, 0)
+script = ExtResource("2_player")
+character = NodePath("..")
+material_footstep_sound_map = Array[ExtResource("3_footstep")]([SubResource("Resource_Concrete"), SubResource("Resource_Grass"), SubResource("Resource_Ice"), SubResource("Resource_Sand")])
+grid_map_material_detection = false
+meta_data_material_detection = false
+h_terrain_material_detection = false
+accepted_meta_data_names = PackedStringArray("surface_type")
+default_material_footstep_movement_sound = ExtResource("4_concrete")
+default_material_footstep_landing_sound = ExtResource("4_concrete")
+character_max_speed = 8.0
+metadata/_custom_type_script = "uid://jy4sym0dop3s"
+
+[node name="Tip" type="Label3D" parent="." unique_id=149465912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3)
+pixel_size = 0.02
+text = "Tab To Sprint"
+
+[node name="Tip2" type="Label3D" parent="." unique_id=137510559]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 20, 3, 0)
+pixel_size = 0.01
+text = "This is Example 3. Tiles use surface material detection by resource_name or material file name (Grass/Sand/Ice/Concrete)."
+autowrap_mode = 3

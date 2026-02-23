@@ -63,7 +63,7 @@
 
 [![Video Tutorial](https://img.youtube.com/vi/zFgYhZyGRw0/hqdefault.jpg)](https://youtu.be/zFgYhZyGRw0)
 
-Godot Material Footsteps is an addon for Godot 4 that plays footstep sounds based on the surface your character is walking on. Instead of manually scripting sounds for each type of surface, you can directly configure the surfaces in the editor inspector. It works with different setups, including metadata on meshes, GridMap tiles, and HTerrain Classic4 shaders.
+Godot Material Footsteps is an addon for Godot 4 that plays footstep sounds based on the surface your character is walking on. You can directly configure the surfaces in the editor inspector. It works with different setups, including metadata on meshes, GridMap tiles, HTerrain Classic4 shaders, and even **direct surface material detection**.
 
 This addon is available on the [Godot Asset Library](https://godotengine.org/asset-library/asset/4122).
 
@@ -78,7 +78,7 @@ This addon is available on the [Godot Asset Library](https://godotengine.org/ass
 
 ### Features
 
-- **Multiple Detection Methods**: Metadata, GridMap tiles, and HTerrain shader support
+- **Multiple Detection Methods**: Metadata, GridMap tiles, HTerrain shader support, and surface material detection
 - **Easy Configuration**: Map sounds to materials directly in the inspector
 - **Fallback System**: Default sounds when no material match is found
 - **Efficient**: Very performant
@@ -233,6 +233,16 @@ material_footstep_sound_map:
     └── sounds: [sand_01.wav, sand_02.wav]
 ```
 
+#### Method D: Using Surface Materials
+
+**Best for:** If you want to detect based on actual material and surfaces. 
+
+The surface detector reads material names from the hit surface in this order:
+1. `resource_name`
+2. Material file name
+
+Match these values with `material_name` entries in `material_footstep_sound_map`.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
@@ -240,8 +250,9 @@ material_footstep_sound_map:
 - [x] Metadata-based surface detection
 - [x] GridMap support
 - [x] HTerrain Classic4 shader support
+- [x] Actual material surface-based detection
 - [ ] Support for Terrain3D
-- [ ] Automatic volume adjustment based on movement speed
+- [x] Automatic volume adjustment based on movement speed
 
 See the [open issues](https://github.com/COOKIE-POLICE/godot-material-footsteps/issues) for a full list of proposed features and known issues.
 
