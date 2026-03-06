@@ -1,11 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://dp6lkpgcj4qyt"]
+[gd_scene format=3 uid="uid://dp6lkpgcj4qyt"]
 
-[ext_resource type="MeshLibrary" uid="uid://cabegce78rkb3" path="res://godot_material_footsteps_examples/example_2_grid_map/tiles/tiles.tres" id="1_8ig2u"]
-[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://godot_material_footsteps_examples/common/proto_controller/proto_controller.tscn" id="2_uiqiq"]
+[ext_resource type="MeshLibrary" uid="uid://cabegce78rkb3" path="res://addons/godot_material_footsteps/examples/example_2_grid_map/tiles/tiles.tres" id="1_8ig2u"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/godot_material_footsteps/examples/common/proto_controller/proto_controller.tscn" id="2_uiqiq"]
 [ext_resource type="Script" uid="uid://jy4sym0dop3s" path="res://addons/godot_material_footsteps/core/material_footstep_player_3d.gd" id="3_rsg6y"]
 [ext_resource type="Script" uid="uid://cfs28riswyejx" path="res://addons/godot_material_footsteps/resources/material_footstep.gd" id="4_qp77l"]
-[ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://godot_material_footsteps_examples/common/assets/sfx/grass.wav" id="5_31das"]
-[ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://godot_material_footsteps_examples/common/assets/sfx/concrete.wav" id="6_u0qau"]
+[ext_resource type="AudioStream" uid="uid://cy26rdy8dg0o6" path="res://addons/godot_material_footsteps/examples/common/assets/sfx/grass.wav" id="5_31das"]
+[ext_resource type="AudioStream" uid="uid://77a8byc3druy" path="res://addons/godot_material_footsteps/examples/common/assets/sfx/concrete.wav" id="6_u0qau"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iy2wk"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
