@@ -21,6 +21,7 @@ enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 @export var grid_map_material_detection: bool = true
 @export var meta_data_material_detection: bool = true
 @export var h_terrain_material_detection: bool = true
+@export var terrain3d_material_detection: bool = true
 
 @export_group("Advanced Settings")
 @export var accepted_meta_data_names: PackedStringArray = ["surface_type"]
@@ -59,6 +60,7 @@ var surface_material_detector: RefCounted
 var meta_data_material_detector: RefCounted
 var grid_map_material_detector: RefCounted
 var h_terrain_material_detector: RefCounted
+var terrain3d_material_detector: RefCounted
 var landing_detector: RefCounted
 
 var movement_sound_map: Dictionary
@@ -122,6 +124,7 @@ func _create_components() -> void:
 	meta_data_material_detector = preload(SCRIPTS_PATH + "material_detectors/meta_data_material_detector.gd").new()
 	grid_map_material_detector = preload(SCRIPTS_PATH + "material_detectors/grid_map_material_detector.gd").new()
 	h_terrain_material_detector = preload(SCRIPTS_PATH + "material_detectors/h_terrain_material_detector.gd").new()
+	terrain3d_material_detector = preload(SCRIPTS_PATH + "material_detectors/terrain3d_material_detector.gd").new(self.get_tree().current_scene.find_child("Terrain3D",true,false))
 	landing_detector = preload(SCRIPTS_PATH + "landing_detector.gd").new()
 
 func _setup_sound_maps() -> void:
@@ -144,13 +147,15 @@ func _configure_material_detectors() -> void:
 		chain_of_responsibility.add_handler(meta_data_material_detector.detect)
 	if h_terrain_material_detection:
 		chain_of_responsibility.add_handler(h_terrain_material_detector.detect)
+	if terrain3d_material_detection:
+		chain_of_responsibility.add_handler(terrain3d_material_detector.detect)
 	
 	var shared_properties = {
 		"accepted_meta_data_names": accepted_meta_data_names,
 		"all_possible_material_names": all_possible_material_names,
 		"caching": caching
 	}
-	for detector in [surface_material_detector, meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector]:
+	for detector in [surface_material_detector, meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector,terrain3d_material_detector]:
 		for property_name in shared_properties:
 			detector.set(property_name, shared_properties[property_name])
 
