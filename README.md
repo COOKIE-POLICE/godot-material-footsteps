@@ -251,7 +251,7 @@ Match these values with `material_name` entries in `material_footstep_sound_map`
 - [x] GridMap support
 - [x] HTerrain Classic4 shader support
 - [x] Actual material surface-based detection
-- [ ] Support for Terrain3D
+- [x] Support for Terrain3D
 - [x] Automatic volume adjustment based on movement speed
 
 See the [open issues](https://github.com/COOKIE-POLICE/godot-material-footsteps/issues) for a full list of proposed features and known issues.
