@@ -21,6 +21,7 @@ enum AutoPlayType { STATIC, DYNAMIC, DISABLED }
 @export var grid_map_material_detection: bool = true
 @export var meta_data_material_detection: bool = true
 @export var h_terrain_material_detection: bool = true
+@export var terrain3d_material_detection: bool = true
 
 @export_group("Advanced Settings")
 @export var accepted_meta_data_names: PackedStringArray = ["surface_type"]
@@ -59,6 +60,7 @@ var surface_material_detector: RefCounted
 var meta_data_material_detector: RefCounted
 var grid_map_material_detector: RefCounted
 var h_terrain_material_detector: RefCounted
+var terrain3d_material_detector: RefCounted
 var landing_detector: RefCounted
 
 var movement_sound_map: Dictionary
@@ -66,6 +68,8 @@ var landing_sound_map: Dictionary
 var all_possible_material_names: PackedStringArray
 var cached_footstep_delay: float
 var last_speed_ratio: float = -1.0
+
+var check_if_terrain3d_exists
 #endregion
 
 #region PROPERTY VALIDATION
@@ -122,6 +126,10 @@ func _create_components() -> void:
 	meta_data_material_detector = preload(SCRIPTS_PATH + "material_detectors/meta_data_material_detector.gd").new()
 	grid_map_material_detector = preload(SCRIPTS_PATH + "material_detectors/grid_map_material_detector.gd").new()
 	h_terrain_material_detector = preload(SCRIPTS_PATH + "material_detectors/h_terrain_material_detector.gd").new()
+	if ClassDB.class_exists("Terrain3D") and self.get_tree().current_scene.find_children("*","Terrain3D",true):
+		check_if_terrain3d_exists = self.get_tree().current_scene.find_children("*","Terrain3D",true).front()
+		if check_if_terrain3d_exists:
+			terrain3d_material_detector = preload(SCRIPTS_PATH + "material_detectors/terrain3d_material_detector.gd").new(self.get_tree().current_scene.find_children("*","Terrain3D",true).front())
 	landing_detector = preload(SCRIPTS_PATH + "landing_detector.gd").new()
 
 func _setup_sound_maps() -> void:
@@ -144,15 +152,23 @@ func _configure_material_detectors() -> void:
 		chain_of_responsibility.add_handler(meta_data_material_detector.detect)
 	if h_terrain_material_detection:
 		chain_of_responsibility.add_handler(h_terrain_material_detector.detect)
+	if terrain3d_material_detection and  check_if_terrain3d_exists:
+		chain_of_responsibility.add_handler(terrain3d_material_detector.detect)
 	
 	var shared_properties = {
 		"accepted_meta_data_names": accepted_meta_data_names,
 		"all_possible_material_names": all_possible_material_names,
 		"caching": caching
 	}
-	for detector in [surface_material_detector, meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector]:
-		for property_name in shared_properties:
-			detector.set(property_name, shared_properties[property_name])
+
+	if  check_if_terrain3d_exists:
+		for detector in [surface_material_detector, meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector,terrain3d_material_detector]:
+			for property_name in shared_properties:
+				detector.set(property_name, shared_properties[property_name])
+	else:
+		for detector in [surface_material_detector, meta_data_material_detector, grid_map_material_detector, h_terrain_material_detector]:
+			for property_name in shared_properties:
+				detector.set(property_name, shared_properties[property_name])
 
 func _setup_audio_player() -> void:
 	if not audio_player:
