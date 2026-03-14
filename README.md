@@ -63,7 +63,7 @@
 
 [![Video Tutorial](https://img.youtube.com/vi/zFgYhZyGRw0/hqdefault.jpg)](https://youtu.be/zFgYhZyGRw0)
 
-Godot Material Footsteps is an addon for Godot 4 that plays footstep sounds based on the surface your character is walking on. You can directly configure the surfaces in the editor inspector. It works with different setups, including metadata on meshes, GridMap tiles, HTerrain Classic4 shaders, and even **direct surface material detection**.
+Godot Material Footsteps is an addon for Godot 4 that plays footstep sounds based on the surface your character is walking on. You can directly configure the surfaces in the editor inspector. It works with different setups, including metadata on meshes, GridMap tiles, HTerrain Classic4 shaders, **Terrain3D** and even **direct surface material detection**.
 
 This addon is available on the [Godot Asset Library](https://godotengine.org/asset-library/asset/4122).
 
