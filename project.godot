@@ -21,7 +21,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Godot Material Footsteps"
-config/version="2.0.0"
+config/version="2.3.0"
 config/tags=PackedStringArray("addons")
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://o07cdoruhoqq"
