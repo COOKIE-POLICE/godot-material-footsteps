@@ -10,11 +10,9 @@ func detect(raycast: RayCast3D) -> Variant:
 		return null
 	if not (raycast.get_collider() is GridMap):
 		return null
-
 	var gridmap = raycast.get_collider() as GridMap
-	var local_pos = gridmap.to_local(raycast.get_collision_point())
-	local_pos.y -= gridmap.cell_size.y
-	var cell = gridmap.local_to_map(local_pos)
+	var inward_point = raycast.get_collision_point() - raycast.get_collision_normal() * gridmap.cell_size * 0.5
+	var cell = gridmap.local_to_map(gridmap.to_local(inward_point))
 	return _detect_material(gridmap, cell)
 #endregion
 #region PRIVATE METHODS
