@@ -253,6 +253,7 @@ Match these values with `material_name` entries in `material_footstep_sound_map`
 - [x] Actual material surface-based detection
 - [x] Support for Terrain3D
 - [x] Automatic volume adjustment based on movement speed
+- [x] Full documentation website 
 
 See the [open issues](https://github.com/COOKIE-POLICE/godot-material-footsteps/issues) for a full list of proposed features and known issues.
 
